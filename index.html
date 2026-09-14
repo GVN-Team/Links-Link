@@ -26,49 +26,22 @@
             color: #ffffff;
         }
 
-        /* 画面中央に青白くネオン発光する強烈なログインボタン */
-        .discord-neon-btn {
-            background: linear-gradient(135deg, #5865F2 0%, #7983F5 40%, #D0DBFF 100%);
+        /* 控えめかつ洗練された青白発光ログインボタン */
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2 0%, #6366F1 100%);
             color: #ffffff;
-            text-shadow: 0 0 12px rgba(255, 255, 255, 0.95), 0 0 24px rgba(88, 101, 242, 1);
-            box-shadow: 
-                0 0 25px rgba(88, 101, 242, 0.9),
-                0 0 55px rgba(135, 160, 255, 0.85),
-                0 0 95px rgba(255, 255, 255, 0.7),
-                inset 0 0 20px rgba(255, 255, 255, 0.85);
-            animation: intenseNeonPulse 2.5s infinite alternate ease-in-out;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 18px rgba(88, 101, 242, 0.45), 0 0 35px rgba(99, 102, 241, 0.25);
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .discord-neon-btn:active, .discord-neon-btn:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 
-                0 0 35px rgba(88, 101, 242, 1),
-                0 0 75px rgba(150, 180, 255, 1),
-                0 0 130px rgba(255, 255, 255, 1),
-                inset 0 0 30px rgba(255, 255, 255, 1);
-            filter: brightness(1.2);
+        .discord-btn:active, .discord-btn:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 0 24px rgba(88, 101, 242, 0.75), 0 0 45px rgba(147, 197, 253, 0.35);
+            filter: brightness(1.08);
         }
 
-        @keyframes intenseNeonPulse {
-            0% {
-                box-shadow: 
-                    0 0 20px rgba(88, 101, 242, 0.85),
-                    0 0 45px rgba(120, 140, 255, 0.6),
-                    0 0 75px rgba(255, 255, 255, 0.5),
-                    inset 0 0 15px rgba(255, 255, 255, 0.7);
-            }
-            100% {
-                box-shadow: 
-                    0 0 45px rgba(88, 101, 242, 1),
-                    0 0 85px rgba(160, 185, 255, 0.9),
-                    0 0 125px rgba(255, 255, 255, 0.85),
-                    inset 0 0 28px rgba(255, 255, 255, 0.95);
-            }
-        }
-
-        /* Glassmorphism Card Style */
+        /* Glassmorphism Card Style (アカウント設定・保存リンク用) */
         .glass-panel {
             background: rgba(13, 14, 22, 0.85);
             backdrop-filter: blur(16px);
@@ -90,19 +63,18 @@
         }
 
         @keyframes cardGlow {
-            0% { border-color: #3B82F6; box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+            0% { border-color: #3B82F6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
             100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: none; }
         }
     </style>
 </head>
 <body class="bg-black text-white min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-    <!-- 画面右上：ログイン済みユーザーヘッダー (アバター & ドロップダウン) -->
+    <!-- 画面右上：丸い自分のアバターアイコンのみ（タップでメニュー表示） -->
     <header id="user-header" class="hidden fixed top-3 right-3 z-50">
         <div class="relative">
-            <button onclick="toggleUserMenu()" class="flex items-center space-x-2 p-1 bg-gray-900/90 border border-gray-700/80 rounded-full transition cursor-pointer shadow-lg active:scale-95">
-                <img id="nav-user-avatar" src="" alt="Avatar" class="w-9 h-9 rounded-full border border-[#5865F2] object-cover">
-                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 pr-1.5"></i>
+            <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full border-2 border-[#5865F2] overflow-hidden focus:outline-none shadow-lg active:scale-95 transition cursor-pointer">
+                <img id="nav-user-avatar" src="" alt="Avatar" class="w-full h-full object-cover">
             </button>
 
             <!-- ドロップダウンメニュー -->
@@ -113,22 +85,22 @@
                 </div>
                 
                 <div class="py-1">
-                    <button onclick="switchView('account-settings')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-indigo-600/30 flex items-center space-x-3 transition">
+                    <button onclick="switchView('account-settings')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-indigo-600/30 flex items-center space-x-3 transition cursor-pointer">
                         <i class="fa-solid fa-gear text-indigo-400 w-4"></i>
                         <span class="font-bold">アカウント設定</span>
                     </button>
-                    <button onclick="switchView('saved-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-amber-600/30 flex items-center space-x-3 transition">
+                    <button onclick="switchView('saved-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-amber-600/30 flex items-center space-x-3 transition cursor-pointer">
                         <i class="fa-solid fa-bookmark text-amber-400 w-4"></i>
                         <span class="font-bold">保存したリンク</span>
                     </button>
-                    <button onclick="switchView('all-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-emerald-600/30 flex items-center space-x-3 transition">
+                    <button onclick="switchView('all-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-emerald-600/30 flex items-center space-x-3 transition cursor-pointer">
                         <i class="fa-solid fa-list-check text-emerald-400 w-4"></i>
                         <span class="font-bold">All Link 一覧</span>
                     </button>
                 </div>
 
                 <div class="border-t border-gray-800/80 pt-1 mt-1">
-                    <button onclick="logout()" class="w-full text-left px-4 py-2 text-xs text-red-500 active:bg-red-950/40 font-bold flex items-center space-x-3 transition">
+                    <button onclick="logout()" class="w-full text-left px-4 py-2 text-xs text-red-500 active:bg-red-950/40 font-bold flex items-center space-x-3 transition cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket w-4"></i>
                         <span>ログアウト</span>
                     </button>
@@ -140,10 +112,10 @@
     <!-- メインコンテンツコンテナ -->
     <main class="flex-grow flex items-center justify-center p-3 relative z-10 w-full max-w-2xl mx-auto">
 
-        <!-- 1. ログイン前：画面中央の青白くネオン発光するログインボタンのみ -->
+        <!-- 1. ログイン前：画面中央のログインボタン（上品で控えめな青白発光） -->
         <section id="login-view" class="flex flex-col items-center justify-center my-auto py-20">
-            <button onclick="loginWithDiscord()" class="discord-neon-btn px-8 py-4 sm:px-12 sm:py-5 rounded-2xl text-lg sm:text-2xl font-black flex items-center justify-center space-x-3 tracking-wider select-none cursor-pointer active:scale-95">
-                <i class="fa-brands fa-discord text-2xl sm:text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,1)]"></i>
+            <button onclick="loginWithDiscord()" class="discord-btn px-8 py-4 sm:px-10 sm:py-4 rounded-2xl text-base sm:text-lg font-extrabold flex items-center justify-center space-x-3 tracking-wider select-none cursor-pointer active:scale-95">
+                <i class="fa-brands fa-discord text-xl sm:text-2xl"></i>
                 <span>Discordでログイン</span>
             </button>
         </section>
@@ -210,7 +182,7 @@
                         </div>
                         <h2 class="text-base font-black text-white">アカウント設定</h2>
                     </div>
-                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition">
+                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition cursor-pointer">
                         <i class="fa-solid fa-arrow-left mr-1"></i>戻る
                     </button>
                 </div>
@@ -248,7 +220,7 @@
                             <h2 class="text-base font-black text-white">保存したリンク</h2>
                         </div>
                     </div>
-                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition">
+                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition cursor-pointer">
                         <i class="fa-solid fa-arrow-left mr-1"></i>戻る
                     </button>
                 </div>
@@ -259,24 +231,10 @@
             </div>
         </section>
 
-        <!-- 5. All Link (メインリンク集一覧) 画面 -->
+        <!-- 5. All Link (メインリンク集一覧) 画面 - 大きな外枠ボックスを無くしすっきり配置 -->
         <section id="all-links-view" class="hidden w-full my-4">
-            <div class="glass-panel rounded-3xl p-4 sm:p-6 border border-emerald-500/30">
-                <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-4">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-                            <i class="fa-solid fa-link text-sm"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-base font-black text-white">All Link ポータル</h2>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- リンクカードコンテナ -->
-                <div id="all-links-container" class="space-y-3">
-                    <!-- Dynamic Render All Links -->
-                </div>
+            <div id="all-links-container" class="space-y-3">
+                <!-- Dynamic Render All Links -->
             </div>
         </section>
 
@@ -490,7 +448,7 @@
                 const isSaved = savedLinkIds.includes(link.id);
                 const card = document.createElement('div');
                 card.id = `link-card-${link.id}`;
-                card.className = 'p-3 bg-gray-900/90 border border-gray-800 rounded-xl relative flex items-center space-x-3 group';
+                card.className = 'p-3 bg-gray-900/90 border border-gray-800 rounded-2xl relative flex items-center space-x-3 group shadow-lg';
 
                 card.innerHTML = `
                     <div class="relative w-16 h-24 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center">
@@ -512,7 +470,7 @@
                         </div>
                     </div>
 
-                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-2 right-2 text-sm p-1.5 active:scale-125 transition">
+                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-2 right-2 text-sm p-1.5 active:scale-125 transition cursor-pointer">
                         <i class="${isSaved ? 'fa-solid fa-bookmark text-amber-400' : 'fa-regular fa-bookmark text-gray-500'}"></i>
                     </button>
                 `;
@@ -554,7 +512,7 @@
                         </div>
                     </div>
 
-                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-2.5 py-1.5 bg-amber-500/20 active:bg-amber-500/40 border border-amber-500/40 text-amber-300 font-bold text-[10px] rounded-lg transition shrink-0 flex items-center space-x-1">
+                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-2.5 py-1.5 bg-amber-500/20 active:bg-amber-500/40 border border-amber-500/40 text-amber-300 font-bold text-[10px] rounded-lg transition shrink-0 flex items-center space-x-1 cursor-pointer">
                         <span>移動</span>
                         <i class="fa-solid fa-chevron-right text-[8px]"></i>
                     </button>
