@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord ログイン</title>
+    <title>Discord ログイン & リンク集</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800;900&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
             padding: 0;
             overflow-x: hidden;
             min-height: 100vh;
+            color: #ffffff;
         }
 
         /* 画面中央に青白く力強くネオン発光する本番用ログインボタン */
@@ -67,11 +68,28 @@
                     inset 0 0 28px rgba(255, 255, 255, 0.95);
             }
         }
+
+        /* All Link ネオンボタン */
+        .all-link-btn {
+            background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #A7F3D0 100%);
+            color: #064E3B;
+            box-shadow: 
+                0 0 25px rgba(16, 185, 129, 0.8),
+                0 0 50px rgba(52, 211, 153, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .all-link-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 
+                0 0 35px rgba(16, 185, 129, 1),
+                0 0 70px rgba(52, 211, 153, 0.9);
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen w-screen relative">
+<body class="flex items-center justify-center min-h-screen w-screen relative bg-black">
 
-    <!-- ログイン前：真っ黒な画面の中央に配置された青白く光るボタンのみ -->
+    <!-- 1. ログイン前：真っ黒な画面の中央に配置された青白く光るボタンのみ -->
     <div id="login-section" class="flex flex-col items-center justify-center z-10 p-4">
         <button onclick="loginWithDiscord()" class="discord-neon-btn px-10 py-5 sm:px-14 sm:py-6 rounded-3xl text-xl sm:text-2xl font-black flex items-center justify-center space-x-4 tracking-wider select-none cursor-pointer">
             <i class="fa-brands fa-discord text-3xl sm:text-4xl drop-shadow-[0_0_10px_rgba(255,255,255,1)]"></i>
@@ -79,65 +97,136 @@
         </button>
     </div>
 
-    <!-- ログイン成功後：リンク集カードを表示（初期状態は非表示） -->
-    <div id="links-section" class="hidden w-full max-w-md p-4 z-10">
-        <div class="bg-gradient-to-b from-[#11121c] to-[#0a0b10] border border-[#5865F2]/40 rounded-3xl p-6 shadow-[0_0_50px_rgba(88,101,242,0.25)] text-center">
-            <!-- ユーザープロフィール -->
-            <img id="user-avatar" class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-[#5865F2] shadow-[0_0_15px_rgba(88,101,242,0.6)]" src="" alt="Avatar">
-            <h1 id="user-name" class="text-2xl font-extrabold text-white"></h1>
-            <p id="user-id" class="text-xs text-indigo-300/70 font-mono mt-1 mb-6"></p>
-
-            <!-- リンク集一覧 -->
-            <div class="space-y-3 text-left">
-                <a href="https://discord.gg" target="_blank" class="block p-4 bg-gray-900/80 hover:bg-gray-800/90 rounded-2xl border border-gray-800 transition flex items-center space-x-4 group">
-                    <div class="w-10 h-10 rounded-xl bg-[#5865F2]/20 flex items-center justify-center text-[#5865F2] group-hover:scale-110 transition">
-                        <i class="fa-brands fa-discord text-xl"></i>
-                    </div>
-                    <div>
-                        <div class="text-white font-bold text-sm">公式 Discord コミュニティ</div>
-                        <div class="text-xs text-gray-400">メンバー限定サーバーへ参加</div>
-                    </div>
-                </a>
-
-                <a href="https://github.com" target="_blank" class="block p-4 bg-gray-900/80 hover:bg-gray-800/90 rounded-2xl border border-gray-800 transition flex items-center space-x-4 group">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition">
-                        <i class="fa-brands fa-github text-xl"></i>
-                    </div>
-                    <div>
-                        <div class="text-white font-bold text-sm">GitHub</div>
-                        <div class="text-xs text-gray-400">プロジェクトリポジトリ</div>
-                    </div>
-                </a>
+    <!-- 2. 認証完了後の画面 (ステータス表示 & ロール検証結果) -->
+    <div id="auth-status-section" class="hidden w-full max-w-md p-4 z-10">
+        <div class="bg-gradient-to-b from-[#11121c] to-[#0a0b10] border border-[#5865F2]/40 rounded-3xl p-6 shadow-[0_0_50px_rgba(88,101,242,0.25)] text-center relative overflow-hidden">
+            <!-- ローディングインジケーター -->
+            <div id="checking-loader" class="py-8">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-[#5865F2] mb-3"></i>
+                <p class="text-sm font-semibold text-gray-300">権限情報を取得・確認中...</p>
             </div>
 
-            <!-- ログアウトボタン -->
-            <button onclick="logout()" class="mt-8 text-xs text-red-400 hover:text-red-300 font-semibold tracking-wide transition">
-                <i class="fa-solid fa-right-from-bracket mr-1"></i>ログアウト
-            </button>
+            <!-- 判定完了後のコンテンツ -->
+            <div id="status-content" class="hidden">
+                <img id="user-avatar" class="w-20 h-20 rounded-full mx-auto mb-3 border-2 border-[#5865F2] shadow-[0_0_15px_rgba(88,101,242,0.6)]" src="" alt="Avatar">
+                <h1 id="user-name" class="text-2xl font-extrabold text-white"></h1>
+                <p id="user-id" class="text-xs text-indigo-300/70 font-mono mt-1 mb-6"></p>
+
+                <!-- 【A】ロールが無い場合の表示 (赤文字 & 購入用リンク) -->
+                <div id="no-role-view" class="hidden space-y-4 my-6 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl">
+                    <p class="text-red-500 font-black text-lg sm:text-xl tracking-wide">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i>Link Memberロールがありません
+                    </p>
+                    <div class="text-sm text-gray-300">
+                        <a href="https://discord.gg/9hZdjpQAw" target="_blank" class="text-red-400 hover:text-red-300 underline font-bold break-all block my-1">
+                            https://discord.gg/9hZdjpQAw
+                        </a>
+                        権限を購入してください
+                    </div>
+                </div>
+
+                <!-- 【B】ロールがある場合の表示 (緑文字 & All Link ボタン) -->
+                <div id="has-role-view" class="hidden space-y-6 my-6">
+                    <div class="inline-flex items-center space-x-2 px-4 py-1.5 bg-emerald-950/60 border border-emerald-500/60 rounded-full text-emerald-400 font-extrabold text-lg tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Link Member</span>
+                    </div>
+
+                    <div>
+                        <button onclick="showLinkListPage()" class="all-link-btn w-full py-4 rounded-2xl font-black text-xl tracking-wider cursor-pointer flex items-center justify-center space-x-3">
+                            <i class="fa-solid fa-list-check text-2xl"></i>
+                            <span>All Link</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ログアウトボタン -->
+                <button onclick="logout()" class="mt-4 text-xs text-gray-400 hover:text-red-400 font-semibold tracking-wide transition">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i>ログアウト
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. All Link 押下後の全レイアウト置き換え画面（リンク一覧集） -->
+    <div id="links-page-section" class="hidden w-full max-w-2xl p-4 sm:p-6 z-10 my-8">
+        <div class="bg-gradient-to-b from-[#0f111a] to-[#08090d] border border-emerald-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(16,185,129,0.2)]">
+            <!-- 画面ヘッダー -->
+            <div class="flex items-center justify-between pb-6 border-b border-gray-800 mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                        <i class="fa-solid fa-link text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-black text-white tracking-wide">All Link 集</h2>
+                        <span class="text-xs text-emerald-400 font-bold">● Link Member 認証完了</span>
+                    </div>
+                </div>
+                <button onclick="backToAuthStatus()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-gray-300 rounded-xl transition">
+                    <i class="fa-solid fa-arrow-left mr-1"></i>戻る
+                </button>
+            </div>
+
+            <!-- リンク一覧（JavaScriptで動的描画） -->
+            <div id="custom-link-container" class="space-y-4">
+                <!-- Dynamic links render here -->
+            </div>
+
+            <!-- フッター -->
+            <div class="mt-8 pt-6 border-t border-gray-800 text-center flex items-center justify-between text-xs text-gray-500">
+                <span>All Link Portal</span>
+                <button onclick="logout()" class="text-red-400 hover:underline">ログアウト</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // CLIENT_ID と REDIRECT_URI の設定
+        // CLIENT_ID, SERVER_ID, ROLE_ID の設定
         const CLIENT_ID = '1549006862576390195';
+        const TARGET_SERVER_ID = '1545048902032556173';
+        const REQUIRED_ROLE_ID = '1549026062015529031';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
 
         /**
-         * Discord OAuth2 (Implicit Grant Flow) ログインを開始
-         * ※ Web Server 不要。Client Secret なしでブラウザのハッシュにアクセストークンが直接返却されます。
+         * ★ JavaScript内で自由に設定できるリンクデータの一覧
+         * { id: 数値, title: '表示タイトル', url: '遷移先URL', icon: 'FontAwesomeクラス名', description: '説明文' }
+         */
+        const LINK_LIST = [
+            {
+                id: 1,
+                title: '公式 Discord コミュニティ',
+                url: 'https://discord.gg/9hZdjpQAw',
+                icon: 'fa-brands fa-discord',
+                description: 'Link Member 限定コミュニティサーバー'
+            },
+            {
+                id: 2,
+                title: '限定会員コンテンツ Portal',
+                url: 'https://example.com/vip-portal',
+                icon: 'fa-solid fa-gem',
+                description: 'ロール保有者専用の特別機能ページ'
+            },
+            {
+                id: 3,
+                title: 'サポート & お問い合わせ',
+                url: 'https://example.com/support',
+                icon: 'fa-solid fa-headset',
+                description: '権限やリンクに関するお問い合わせ窓口'
+            }
+        ];
+
+        /**
+         * Discord OAuth2 ログインを開始
          */
         function loginWithDiscord() {
             const scope = encodeURIComponent('identify guilds guilds.members.read');
             const redirect = encodeURIComponent(REDIRECT_URI);
-            
-            // Implicit Grant Flow (response_type=token)
             const authUrl = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${redirect}&scope=${scope}`;
-            
             window.location.href = authUrl;
         }
 
         /**
-         * URLハッシュ (#access_token=...) を解析して Discord API からユーザー情報を取得
+         * ページロード時：URLのハッシュ (#access_token=...) を解析
          */
         async function handleOAuthCallback() {
             const hash = window.location.hash.substring(1);
@@ -145,46 +234,126 @@
             const accessToken = params.get('access_token');
 
             if (accessToken) {
+                // 中央のログインボタンを非表示、認証ステータス画面を表示
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('auth-status-section').classList.remove('hidden');
+
                 try {
-                    // アクセストークンを使って Discord の本物のユーザー情報を取得
-                    const res = await fetch('https://discord.com/api/v10/users/@me', {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`
-                        }
+                    // 1. ユーザープロフィールの取得
+                    const userRes = await fetch('https://discord.com/api/v10/users/@me', {
+                        headers: { Authorization: `Bearer ${accessToken}` }
                     });
+                    if (!userRes.ok) throw new Error('ユーザー情報の取得に失敗しました');
+                    const user = await userRes.json();
 
-                    if (!res.ok) throw new Error('ユーザー情報の取得に失敗しました');
-
-                    const user = await res.json();
-                    
-                    // ログイン前の「ボタンのみ」を非表示にし、リンク集を表示
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('links-section').classList.remove('hidden');
-
-                    // 取得したユーザー情報の反映
+                    // ユーザー情報のUI更新
                     document.getElementById('user-name').textContent = user.username;
                     document.getElementById('user-id').textContent = `@${user.username} (ID: ${user.id})`;
-                    
                     const avatarUrl = user.avatar 
                         ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
                         : `https://cdn.discordapp.com/embed/avatars/0.png`;
                     document.getElementById('user-avatar').src = avatarUrl;
 
-                    // URLのハッシュパラメータを削除してきれいにする
+                    // 2. 指定サーバーにおけるメンバー情報（ロール一覧）の確認
+                    let hasRole = false;
+                    try {
+                        const memberRes = await fetch(`https://discord.com/api/v10/users/@me/guilds/${TARGET_SERVER_ID}/member`, {
+                            headers: { Authorization: `Bearer ${accessToken}` }
+                        });
+                        if (memberRes.ok) {
+                            const memberData = await memberRes.json();
+                            // ロールIDが含まれているか確認
+                            if (memberData.roles && memberData.roles.includes(REQUIRED_ROLE_ID)) {
+                                hasRole = true;
+                            }
+                        }
+                    } catch (err) {
+                        console.error('ギルドメンバー情報の取得失敗:', err);
+                    }
+
+                    // ローダーを消してコンテンツを表示
+                    document.getElementById('checking-loader').classList.add('hidden');
+                    document.getElementById('status-content').classList.remove('hidden');
+
+                    if (hasRole) {
+                        // ロールがある場合
+                        document.getElementById('has-role-view').classList.remove('hidden');
+                    } else {
+                        // ロールがない場合
+                        document.getElementById('no-role-view').classList.remove('hidden');
+                    }
+
+                    // URLのハッシュパラメータを削除
                     history.replaceState(null, null, ' ');
 
                 } catch (error) {
                     console.error('認証エラー:', error);
-                    alert('Discord認証に失敗しました。再度ログインをお試しください。');
+                    document.getElementById('checking-loader').innerHTML = `
+                        <p class="text-red-400 font-bold text-sm">認証処理中にエラーが発生しました。</p>
+                        <button onclick="logout()" class="mt-4 px-4 py-2 bg-gray-800 text-xs rounded-xl">再試行</button>
+                    `;
                 }
             }
         }
 
+        /**
+         * 「All Link」ボタン押下時：画面全体のレイアウトをリンク一覧に置き換え
+         */
+        function showLinkListPage() {
+            document.getElementById('auth-status-section').classList.add('hidden');
+            document.getElementById('links-page-section').classList.remove('hidden');
+
+            renderLinks();
+        }
+
+        /**
+         * リンク一覧を動的に生成
+         */
+        function renderLinks() {
+            const container = document.getElementById('custom-link-container');
+            container.innerHTML = '';
+
+            LINK_LIST.forEach(link => {
+                const linkCard = document.createElement('a');
+                linkCard.href = link.url;
+                linkCard.target = '_blank';
+                linkCard.rel = 'noopener noreferrer';
+                linkCard.className = 'block p-4 sm:p-5 bg-gray-900/90 hover:bg-gray-800 border border-gray-800 hover:border-emerald-500/50 rounded-2xl transition group';
+
+                linkCard.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition shrink-0">
+                            <i class="${link.icon || 'fa-solid fa-link'}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-white font-bold text-base sm:text-lg truncate group-hover:text-emerald-300 transition">${link.title}</h3>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-500 group-hover:text-emerald-400 transition ml-2"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1 truncate">${link.description || ''}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(linkCard);
+            });
+        }
+
+        /**
+         * リンク集からステータス画面に戻る
+         */
+        function backToAuthStatus() {
+            document.getElementById('links-page-section').classList.add('hidden');
+            document.getElementById('auth-status-section').classList.remove('hidden');
+        }
+
+        /**
+         * ログアウト
+         */
         function logout() {
             window.location.href = REDIRECT_URI;
         }
 
-        // ページロード時にリダイレクトバックのトークン存在をチェック
+        // ページロード時にOAuthリダイレクトバックを処理
         window.addEventListener('DOMContentLoaded', handleOAuthCallback);
     </script>
 </body>
