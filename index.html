@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Auth & Link Portal</title>
+    <title>GVN Like Service</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -68,7 +68,7 @@
         }
     </style>
 </head>
-<body class="bg-black text-white min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+<body class="bg-black text-white min-h-[100dvh] h-[100dvh] flex flex-col justify-between relative overflow-x-hidden">
 
     <!-- 画面右上：丸い自分のアバターアイコンのみ（タップでメニュー表示） -->
     <header id="user-header" class="hidden fixed top-3 right-3 z-50">
@@ -110,10 +110,10 @@
     </header>
 
     <!-- メインコンテンツコンテナ -->
-    <main class="flex-grow flex items-center justify-center p-3 relative z-10 w-full max-w-2xl mx-auto">
+    <main class="flex-grow flex items-center justify-center p-3 relative z-10 w-full max-w-2xl mx-auto h-full">
 
         <!-- 1. ログイン前：画面中央のログインボタン（上品で控えめな青白発光） -->
-        <section id="login-view" class="flex flex-col items-center justify-center my-auto py-20">
+        <section id="login-view" class="flex flex-col items-center justify-center w-full h-full my-auto">
             <button onclick="loginWithDiscord()" class="discord-btn px-8 py-4 sm:px-10 sm:py-4 rounded-2xl text-base sm:text-lg font-extrabold flex items-center justify-center space-x-3 tracking-wider select-none cursor-pointer active:scale-95">
                 <i class="fa-brands fa-discord text-xl sm:text-2xl"></i>
                 <span>Discordでログイン</span>
@@ -283,6 +283,14 @@
 
         function switchView(viewName) {
             const views = ['login', 'auth-status', 'account-settings', 'saved-links', 'all-links'];
+            
+            // ログイン画面の時は body の高さ固定・スクロール防止
+            if (viewName === 'login') {
+                document.body.classList.add('h-[100dvh]', 'overflow-hidden');
+            } else {
+                document.body.classList.remove('h-[100dvh]', 'overflow-hidden');
+            }
+
             views.forEach(v => {
                 const el = document.getElementById(`${v}-view`);
                 if (el) {
