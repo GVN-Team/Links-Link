@@ -41,8 +41,8 @@
             border: 1.5px solid rgba(255, 255, 255, 0.6);
         }
 
-        .discord-neon-btn:hover {
-            transform: scale(1.08) translateY(-3px);
+        .discord-neon-btn:active, .discord-neon-btn:hover {
+            transform: scale(1.05) translateY(-2px);
             box-shadow: 
                 0 0 35px rgba(88, 101, 242, 1),
                 0 0 75px rgba(150, 180, 255, 1),
@@ -98,37 +98,37 @@
 <body class="bg-black text-white min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
     <!-- 画面右上：ログイン済みユーザーヘッダー (アバター & ドロップダウン) -->
-    <header id="user-header" class="hidden fixed top-4 right-4 z-50">
+    <header id="user-header" class="hidden fixed top-3 right-3 z-50">
         <div class="relative">
-            <button onclick="toggleUserMenu()" class="flex items-center space-x-3 p-1.5 bg-gray-900/80 hover:bg-gray-800 border border-gray-700/80 rounded-full transition cursor-pointer shadow-lg">
-                <img id="nav-user-avatar" src="" alt="Avatar" class="w-10 h-10 rounded-full border border-[#5865F2] object-cover">
-                <i class="fa-solid fa-chevron-down text-xs text-gray-400 pr-2"></i>
+            <button onclick="toggleUserMenu()" class="flex items-center space-x-2 p-1 bg-gray-900/90 border border-gray-700/80 rounded-full transition cursor-pointer shadow-lg active:scale-95">
+                <img id="nav-user-avatar" src="" alt="Avatar" class="w-9 h-9 rounded-full border border-[#5865F2] object-cover">
+                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 pr-1.5"></i>
             </button>
 
             <!-- ドロップダウンメニュー -->
-            <div id="user-menu-dropdown" class="hidden absolute right-0 mt-3 w-56 bg-[#0f1017] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden py-2 z-50">
-                <div class="px-4 py-3 border-b border-gray-800/80">
-                    <p id="menu-user-name" class="text-sm font-bold text-white truncate"></p>
-                    <p id="menu-user-id" class="text-[10px] text-gray-400 font-mono truncate"></p>
+            <div id="user-menu-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-[#0f1017] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden py-2 z-50">
+                <div class="px-4 py-2.5 border-b border-gray-800/80">
+                    <p id="menu-user-name" class="text-xs font-bold text-white truncate"></p>
+                    <p id="menu-user-id" class="text-[9px] text-gray-400 font-mono truncate"></p>
                 </div>
                 
                 <div class="py-1">
-                    <button onclick="switchView('account-settings')" class="w-full text-left px-4 py-2.5 text-xs text-gray-200 hover:bg-indigo-600/20 hover:text-indigo-300 flex items-center space-x-3 transition cursor-pointer">
+                    <button onclick="switchView('account-settings')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-indigo-600/30 flex items-center space-x-3 transition">
                         <i class="fa-solid fa-gear text-indigo-400 w-4"></i>
                         <span class="font-bold">アカウント設定</span>
                     </button>
-                    <button onclick="switchView('saved-links')" class="w-full text-left px-4 py-2.5 text-xs text-gray-200 hover:bg-amber-600/20 hover:text-amber-300 flex items-center space-x-3 transition cursor-pointer">
+                    <button onclick="switchView('saved-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-amber-600/30 flex items-center space-x-3 transition">
                         <i class="fa-solid fa-bookmark text-amber-400 w-4"></i>
                         <span class="font-bold">保存したリンク</span>
                     </button>
-                    <button onclick="switchView('all-links')" class="w-full text-left px-4 py-2.5 text-xs text-gray-200 hover:bg-emerald-600/20 hover:text-emerald-300 flex items-center space-x-3 transition cursor-pointer">
+                    <button onclick="switchView('all-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-emerald-600/30 flex items-center space-x-3 transition">
                         <i class="fa-solid fa-list-check text-emerald-400 w-4"></i>
                         <span class="font-bold">All Link 一覧</span>
                     </button>
                 </div>
 
                 <div class="border-t border-gray-800/80 pt-1 mt-1">
-                    <button onclick="logout()" class="w-full text-left px-4 py-2.5 text-xs text-red-500 hover:bg-red-950/40 font-bold flex items-center space-x-3 transition cursor-pointer">
+                    <button onclick="logout()" class="w-full text-left px-4 py-2 text-xs text-red-500 active:bg-red-950/40 font-bold flex items-center space-x-3 transition">
                         <i class="fa-solid fa-right-from-bracket w-4"></i>
                         <span>ログアウト</span>
                     </button>
@@ -138,12 +138,12 @@
     </header>
 
     <!-- メインコンテンツコンテナ -->
-    <main class="flex-grow flex items-center justify-center p-4 relative z-10 w-full max-w-4xl mx-auto">
+    <main class="flex-grow flex items-center justify-center p-3 relative z-10 w-full max-w-2xl mx-auto">
 
         <!-- 1. ログイン前：画面中央の青白くネオン発光するログインボタンのみ -->
-        <section id="login-view" class="flex flex-col items-center justify-center my-auto">
-            <button onclick="loginWithDiscord()" class="discord-neon-btn px-10 py-5 sm:px-14 sm:py-6 rounded-3xl text-xl sm:text-2xl font-black flex items-center justify-center space-x-4 tracking-wider select-none cursor-pointer">
-                <i class="fa-brands fa-discord text-3xl sm:text-4xl drop-shadow-[0_0_10px_rgba(255,255,255,1)]"></i>
+        <section id="login-view" class="flex flex-col items-center justify-center my-auto py-20">
+            <button onclick="loginWithDiscord()" class="discord-neon-btn px-8 py-4 sm:px-12 sm:py-5 rounded-2xl text-lg sm:text-2xl font-black flex items-center justify-center space-x-3 tracking-wider select-none cursor-pointer active:scale-95">
+                <i class="fa-brands fa-discord text-2xl sm:text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,1)]"></i>
                 <span>Discordでログイン</span>
             </button>
         </section>
@@ -153,39 +153,45 @@
             <div class="glass-panel rounded-3xl p-6 text-center shadow-[0_0_50px_rgba(88,101,242,0.15)] relative">
                 <!-- ローダー -->
                 <div id="checking-loader" class="py-10">
-                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-[#5865F2] mb-4"></i>
-                    <p class="text-sm font-semibold text-gray-300">サーバー権限を取得・確認中...</p>
+                    <i class="fa-solid fa-circle-notch fa-spin text-3xl text-[#5865F2] mb-3"></i>
+                    <p class="text-xs font-semibold text-gray-300">サーバー権限を確認中...</p>
+                </div>
+
+                <!-- エラー表示領域 -->
+                <div id="error-message-box" class="hidden p-3 mb-4 bg-red-900/50 border border-red-500/80 rounded-xl text-red-200 text-xs text-left">
+                    <p class="font-bold flex items-center"><i class="fa-solid fa-circle-exclamation mr-1.5"></i>エラーが発生しました</p>
+                    <p id="error-message-text" class="mt-1 text-[11px] font-mono break-all"></p>
                 </div>
 
                 <!-- ステータスコンテンツ -->
                 <div id="status-content" class="hidden">
-                    <img id="user-avatar" class="w-20 h-20 rounded-full mx-auto mb-3 border-2 border-[#5865F2] shadow-[0_0_20px_rgba(88,101,242,0.5)]" src="" alt="Avatar">
-                    <h1 id="user-name" class="text-2xl font-extrabold text-white"></h1>
-                    <p id="user-id" class="text-xs text-indigo-300/70 font-mono mt-1 mb-6"></p>
+                    <img id="user-avatar" class="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-[#5865F2] shadow-[0_0_15px_rgba(88,101,242,0.5)]" src="" alt="Avatar">
+                    <h1 id="user-name" class="text-lg font-extrabold text-white"></h1>
+                    <p id="user-id" class="text-[10px] text-indigo-300/70 font-mono mt-0.5 mb-4"></p>
 
                     <!-- ロールなし (赤文字 & 権限購入案内) -->
-                    <div id="no-role-view" class="hidden space-y-4 my-6 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl">
-                        <p class="text-red-500 font-black text-lg sm:text-xl tracking-wide">
-                            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Link Memberロールがありません
+                    <div id="no-role-view" class="hidden space-y-3 my-4 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl">
+                        <p class="text-red-500 font-black text-base sm:text-lg tracking-wide">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>Link Memberロールがありません
                         </p>
-                        <div class="text-xs sm:text-sm text-gray-300">
-                            <a href="https://discord.gg/9hZdjpQAw" target="_blank" class="text-red-400 hover:text-red-300 underline font-bold break-all block my-1">
+                        <div class="text-xs text-gray-300 space-y-1">
+                            <a href="https://discord.gg/9hZdjpQAw" target="_blank" class="text-red-400 hover:text-red-300 underline font-bold break-all block py-1">
                                 https://discord.gg/9hZdjpQAw
                             </a>
-                            権限を購入してください
+                            <p>権限を購入してください</p>
                         </div>
                     </div>
 
                     <!-- ロールあり (緑文字 & All Link ボタン) -->
-                    <div id="has-role-view" class="hidden space-y-6 my-6">
-                        <div class="inline-flex items-center space-x-2 px-4 py-1.5 bg-emerald-950/60 border border-emerald-500/60 rounded-full text-emerald-400 font-extrabold text-lg tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <div id="has-role-view" class="hidden space-y-4 my-4">
+                        <div class="inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-950/60 border border-emerald-500/60 rounded-full text-emerald-400 font-extrabold text-sm tracking-wider">
                             <i class="fa-solid fa-shield-halved"></i>
                             <span>Link Member</span>
                         </div>
 
                         <div>
-                            <button onclick="switchView('all-links')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-gray-950 font-black text-xl tracking-wider cursor-pointer shadow-[0_0_25px_rgba(16,185,129,0.5)] transition flex items-center justify-center space-x-3">
-                                <i class="fa-solid fa-list-check text-2xl"></i>
+                            <button onclick="switchView('all-links')" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-gray-950 font-black text-base tracking-wider cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.4)] active:scale-95 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-list-check text-lg"></i>
                                 <span>All Link</span>
                             </button>
                         </div>
@@ -194,66 +200,36 @@
             </div>
         </section>
 
-        <!-- 3. アカウント設定 画面 (全レイアウト置き換え) -->
-        <section id="account-settings-view" class="hidden w-full my-8">
-            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-indigo-500/30">
-                <div class="flex items-center justify-between pb-6 border-b border-gray-800 mb-6">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
-                            <i class="fa-solid fa-user-gear text-xl"></i>
+        <!-- 3. アカウント設定 画面 -->
+        <section id="account-settings-view" class="hidden w-full my-4">
+            <div class="glass-panel rounded-3xl p-5 border border-indigo-500/30">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+                            <i class="fa-solid fa-user-gear text-sm"></i>
                         </div>
-                        <h2 class="text-xl sm:text-2xl font-black text-white">アカウント設定 & ステータス</h2>
+                        <h2 class="text-base font-black text-white">アカウント設定</h2>
                     </div>
-                    <button onclick="switchView('all-links')" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-gray-300 rounded-xl transition cursor-pointer">
+                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition">
                         <i class="fa-solid fa-arrow-left mr-1"></i>戻る
                     </button>
                 </div>
 
-                <!-- プロフィール詳細 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- 左列: アバターと主要基本情報 -->
-                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 text-center flex flex-col items-center justify-center">
-                        <img id="acc-avatar" class="w-24 h-24 rounded-full border-2 border-indigo-500 mb-4 shadow-[0_0_20px_rgba(99,102,241,0.4)]" src="" alt="Avatar">
-                        <h3 id="acc-username" class="text-xl font-bold text-white"></h3>
-                        <p id="acc-id" class="text-xs text-indigo-300 font-mono mt-1"></p>
-                        <span class="mt-4 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-400 text-xs font-bold">
-                            ● 認証済みセッション
-                        </span>
+                <div class="space-y-4">
+                    <!-- アバターと基本情報 -->
+                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 text-center flex flex-col items-center justify-center">
+                        <img id="acc-avatar" class="w-16 h-16 rounded-full border-2 border-indigo-500 mb-2 shadow-[0_0_15px_rgba(99,102,241,0.3)]" src="" alt="Avatar">
+                        <h3 id="acc-username" class="text-base font-bold text-white"></h3>
+                        <p id="acc-id" class="text-[10px] text-indigo-300 font-mono mt-0.5"></p>
                     </div>
 
-                    <!-- 右列: 持っているロール & その他の状態 -->
-                    <div class="md:col-span-2 space-y-4">
-                        <!-- 所持ロール一覧 -->
-                        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
-                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center">
-                                <i class="fa-solid fa-id-badge text-indigo-400 mr-2"></i>所持しているロール
-                            </h4>
-                            <div id="acc-roles-container" class="flex flex-wrap gap-2">
-                                <!-- JSで動的描画 -->
-                            </div>
-                        </div>
-
-                        <!-- その他諸々の状態詳細 -->
-                        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 space-y-3 text-xs">
-                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center">
-                                <i class="fa-solid fa-sliders text-indigo-400 mr-2"></i>システム & 権限ステータス
-                            </h4>
-                            <div class="flex justify-between py-1 border-b border-gray-800">
-                                <span class="text-gray-400">対象DiscordサーバーID</span>
-                                <span class="text-gray-200 font-mono">1545048902032556173</span>
-                            </div>
-                            <div class="flex justify-between py-1 border-b border-gray-800">
-                                <span class="text-gray-400">必要ロールID (Link Member)</span>
-                                <span class="text-gray-200 font-mono">1549026062015529031</span>
-                            </div>
-                            <div class="flex justify-between py-1 border-b border-gray-800">
-                                <span class="text-gray-400">OAuth2 接続スコープ</span>
-                                <span class="text-gray-200 font-mono">identify, guilds.members.read</span>
-                            </div>
-                            <div class="flex justify-between py-1">
-                                <span class="text-gray-400">アクセストークン状態</span>
-                                <span class="text-emerald-400 font-bold">有効 (Active)</span>
-                            </div>
+                    <!-- 所持ロール一覧 -->
+                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4">
+                        <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center">
+                            <i class="fa-solid fa-id-badge text-indigo-400 mr-1.5"></i>所持しているロール
+                        </h4>
+                        <div id="acc-roles-container" class="flex flex-wrap gap-1.5">
+                            <!-- JSで動的描画 -->
                         </div>
                     </div>
                 </div>
@@ -261,46 +237,44 @@
         </section>
 
         <!-- 4. 保存したリンク一覧 画面 -->
-        <section id="saved-links-view" class="hidden w-full my-8">
-            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-amber-500/30">
-                <div class="flex items-center justify-between pb-6 border-b border-gray-800 mb-6">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-                            <i class="fa-solid fa-bookmark text-xl"></i>
+        <section id="saved-links-view" class="hidden w-full my-4">
+            <div class="glass-panel rounded-3xl p-5 border border-amber-500/30">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                            <i class="fa-solid fa-bookmark text-sm"></i>
                         </div>
                         <div>
-                            <h2 class="text-xl sm:text-2xl font-black text-white">保存したリンク一覧</h2>
-                            <p class="text-xs text-gray-400">ブックマークに追加されたアイテム</p>
+                            <h2 class="text-base font-black text-white">保存したリンク</h2>
                         </div>
                     </div>
-                    <button onclick="switchView('all-links')" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-gray-300 rounded-xl transition cursor-pointer">
+                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition">
                         <i class="fa-solid fa-arrow-left mr-1"></i>戻る
                     </button>
                 </div>
 
-                <div id="saved-links-container" class="space-y-4">
+                <div id="saved-links-container" class="space-y-3">
                     <!-- Dynamic Saved Links Here -->
                 </div>
             </div>
         </section>
 
         <!-- 5. All Link (メインリンク集一覧) 画面 -->
-        <section id="all-links-view" class="hidden w-full my-8">
-            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-emerald-500/30">
-                <div class="flex items-center justify-between pb-6 border-b border-gray-800 mb-6">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-                            <i class="fa-solid fa-link text-xl"></i>
+        <section id="all-links-view" class="hidden w-full my-4">
+            <div class="glass-panel rounded-3xl p-4 sm:p-6 border border-emerald-500/30">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                            <i class="fa-solid fa-link text-sm"></i>
                         </div>
                         <div>
-                            <h2 class="text-xl sm:text-2xl font-black text-white">All Link ポータル</h2>
-                            <span class="text-xs text-emerald-400 font-bold">● Link Member 権限認証完了</span>
+                            <h2 class="text-base font-black text-white">All Link ポータル</h2>
                         </div>
                     </div>
                 </div>
 
                 <!-- リンクカードコンテナ -->
-                <div id="all-links-container" class="space-y-4">
+                <div id="all-links-container" class="space-y-3">
                     <!-- Dynamic Render All Links -->
                 </div>
             </div>
@@ -308,21 +282,17 @@
 
     </main>
 
-    <!-- フッター -->
-    <footer class="py-4 text-center text-xs text-gray-600 relative z-10">
-        <p>&copy; All Link Portal. Discord Authenticated System.</p>
-    </footer>
-
     <script>
         // 設定定数
         const CLIENT_ID = '1549006862576390195';
         const TARGET_SERVER_ID = '1545048902032556173';
         const REQUIRED_ROLE_ID = '1549026062015529031';
+        
+        // redirect_uri は現在のページURLの末尾のパラメータを除いたクリーンな原点URL
         const REDIRECT_URI = window.location.origin + window.location.pathname;
 
         /**
-         * ★ JavaScript内で自由に追加・変更できるリンクデータ一覧
-         * mp4動画ファイルURLを指定すると0:00秒のサムネイルを自動で切り取って表示します。
+         * ★ JavaScript内で追加・変更できるリンクデータ一覧
          */
         const LINK_LIST = [
             {
@@ -330,7 +300,7 @@
                 title: '公式 Discord コミュニティ',
                 url: 'https://discord.gg/9hZdjpQAw',
                 videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-                description: 'Link Member 限定コミュニティサーバーです。メンバー同士の交流やサポートを行っています。'
+                description: 'Link Member 限定コミュニティサーバーです。メンバー同士の交流を行っています。'
             },
             {
                 id: 2,
@@ -341,10 +311,10 @@
             },
             {
                 id: 3,
-                title: 'お問い合わせ & サポートデスク',
+                title: 'お問い合わせ & サポート',
                 url: 'https://example.com/support',
                 videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-                description: '権限に関する質問やエラーのトラブルシューティングを受け付けている公式サポート窓口です。'
+                description: '権限に関する質問やエラーのトラブルシューティングを受け付けている窓口です。'
             }
         ];
 
@@ -353,132 +323,197 @@
         let userRoles = [];
         let savedLinkIds = JSON.parse(localStorage.getItem('saved_link_ids') || '[]');
 
-        /**
-         * Discord OAuth2 ログイン開始
-         */
+        function switchView(viewName) {
+            const views = ['login', 'auth-status', 'account-settings', 'saved-links', 'all-links'];
+            views.forEach(v => {
+                const el = document.getElementById(`${v}-view`);
+                if (el) {
+                    if (v === viewName) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+
+            const dropdown = document.getElementById('user-menu-dropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+
+            if (viewName === 'all-links') renderAllLinks();
+            if (viewName === 'saved-links') renderSavedLinks();
+        }
+
+        function updateUserInfoUI(user) {
+            const avatarUrl = user.avatar 
+                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                : `https://cdn.discordapp.com/embed/avatars/0.png`;
+
+            document.getElementById('nav-user-avatar').src = avatarUrl;
+            document.getElementById('menu-user-name').textContent = user.username;
+            document.getElementById('menu-user-id').textContent = `ID: ${user.id}`;
+
+            document.getElementById('user-avatar').src = avatarUrl;
+            document.getElementById('user-name').textContent = user.username;
+            document.getElementById('user-id').textContent = `ID: ${user.id}`;
+
+            document.getElementById('acc-avatar').src = avatarUrl;
+            document.getElementById('acc-username').textContent = user.username;
+            document.getElementById('acc-id').textContent = `ID: ${user.id}`;
+        }
+
+        function updateRolesUI(roles) {
+            const container = document.getElementById('acc-roles-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!roles || roles.length === 0) {
+                container.innerHTML = `<span class="text-xs text-gray-500">所有ロールはありません</span>`;
+                return;
+            }
+
+            roles.forEach(roleId => {
+                const badge = document.createElement('span');
+                if (roleId === REQUIRED_ROLE_ID) {
+                    badge.className = 'px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/40 rounded text-emerald-300 font-bold text-[10px]';
+                    badge.textContent = `★ Link Member (${roleId})`;
+                } else {
+                    badge.className = 'px-2 py-0.5 bg-indigo-500/20 border border-indigo-500/40 rounded text-indigo-300 font-mono text-[10px]';
+                    badge.textContent = `ID: ${roleId}`;
+                }
+                container.appendChild(badge);
+            });
+        }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('user-menu-dropdown');
+            if (dropdown) dropdown.classList.toggle('hidden');
+        }
+
         function loginWithDiscord() {
+            // Implicit Grant Flow (token) を使用して単一HTMLのみで動作させる
             const scope = encodeURIComponent('identify guilds guilds.members.read');
             const redirect = encodeURIComponent(REDIRECT_URI);
             const authUrl = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${redirect}&scope=${scope}`;
             window.location.href = authUrl;
         }
 
-        /**
-         * OAuth2 Callback 処理
-         */
         async function handleOAuthCallback() {
+            let accessToken = null;
+            
+            // 1. URLのハッシュ (#access_token=...) またはクエリからトークンを探す
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
-            const accessToken = params.get('access_token');
+
+            if (params.has('access_token')) {
+                accessToken = params.get('access_token');
+                sessionStorage.setItem('discord_access_token', accessToken);
+                // アドレスバーのハッシュを消去して綺麗なURLに
+                history.replaceState(null, null, window.location.pathname);
+            } else {
+                accessToken = sessionStorage.getItem('discord_access_token');
+            }
 
             if (accessToken) {
                 switchView('auth-status');
 
                 try {
-                    // 1. ユーザープロフィールの取得
+                    // ユーザー情報取得
                     const userRes = await fetch('https://discord.com/api/v10/users/@me', {
                         headers: { Authorization: `Bearer ${accessToken}` }
                     });
-                    if (!userRes.ok) throw new Error('ユーザー情報の取得に失敗しました');
+                    
+                    if (!userRes.ok) {
+                        sessionStorage.removeItem('discord_access_token');
+                        throw new Error('認証トークンの期限が切れました。再ログインしてください。');
+                    }
+                    
                     currentUser = await userRes.json();
-
-                    // ヘッダーやUIのユーザー情報更新
                     updateUserInfoUI(currentUser);
 
-                    // 2. 指定サーバーメンバー情報（ロール確認）の取得
+                    // サーバーメンバー情報（ロール一覧）の取得
                     let hasRole = false;
                     try {
                         const memberRes = await fetch(`https://discord.com/api/v10/users/@me/guilds/${TARGET_SERVER_ID}/member`, {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         });
+                        
                         if (memberRes.ok) {
                             const memberData = await memberRes.json();
                             userRoles = memberData.roles || [];
+                            updateRolesUI(userRoles);
                             if (userRoles.includes(REQUIRED_ROLE_ID)) {
                                 hasRole = true;
                             }
                         }
                     } catch (err) {
-                        console.error('ギルドメンバー情報の取得失敗:', err);
+                        console.error('ロール取得失敗:', err);
                     }
 
-                    // ローダーを隠して判定完了表示
                     document.getElementById('checking-loader').classList.add('hidden');
                     document.getElementById('status-content').classList.remove('hidden');
 
                     if (hasRole) {
                         document.getElementById('has-role-view').classList.remove('hidden');
                         document.getElementById('user-header').classList.remove('hidden');
-                        // ロールを保有している場合は最初からリンク一覧（All Link）を表示
+                        // ロールがある場合は最初から全リンク画面を表示
                         switchView('all-links');
                     } else {
                         document.getElementById('no-role-view').classList.remove('hidden');
+                        document.getElementById('user-header').classList.remove('hidden');
                     }
-
-                    history.replaceState(null, null, ' ');
 
                 } catch (error) {
                     console.error('認証エラー:', error);
-                    document.getElementById('checking-loader').classList.add('hidden');
-                    document.getElementById('status-content').classList.remove('hidden');
-                    document.getElementById('status-content').innerHTML = `
-                        <div class="p-4 bg-red-950/60 border border-red-500/60 rounded-2xl text-left">
-                            <h3 class="text-red-400 font-extrabold text-base mb-2">
-                                <i class="fa-solid fa-triangle-exclamation mr-1"></i> 認証エラーが発生しました
-                            </h3>
-                            <p class="text-xs text-gray-300 mb-3">${error.message || 'Discordとの通信に失敗しました。'}</p>
-                            <div class="text-[11px] text-gray-400 bg-black/50 p-2.5 rounded-lg space-y-1 font-mono">
-                                <p>・Discord Developer Portalの OAuth2 Redirects 設定を確認してください。</p>
-                                <p>・現在のURL: <span class="text-indigo-300 break-all">${window.location.href}</span></p>
-                            </div>
-                            <button onclick="logout()" class="mt-4 w-full py-2 bg-gray-800 hover:bg-gray-700 text-xs font-bold rounded-xl transition cursor-pointer">
-                                再試行する
-                            </button>
-                        </div>
-                    `;
+                    showError(error.message);
+                    sessionStorage.removeItem('discord_access_token');
                 }
+            } else {
+                switchView('login');
             }
         }
 
-        /**
-         * ★ All Link 一覧の動的描画 (コンパクトデザイン & 統一された縦長サムネイル枠)
-         */
+        function showError(msg) {
+            const errBox = document.getElementById('error-message-box');
+            const errText = document.getElementById('error-message-text');
+            if (errBox && errText) {
+                errText.textContent = msg;
+                errBox.classList.remove('hidden');
+            }
+        }
+
         function renderAllLinks() {
             const container = document.getElementById('all-links-container');
+            if (!container) return;
             container.innerHTML = '';
 
             LINK_LIST.forEach(link => {
                 const isSaved = savedLinkIds.includes(link.id);
                 const card = document.createElement('div');
                 card.id = `link-card-${link.id}`;
-                card.className = 'p-3 bg-gray-900/90 border border-gray-800 hover:border-emerald-500/40 rounded-xl transition relative flex items-center space-x-3 group';
+                card.className = 'p-3 bg-gray-900/90 border border-gray-800 rounded-xl relative flex items-center space-x-3 group';
 
                 card.innerHTML = `
-                    <!-- 1. 縦長統一サムネイル枠 (横長動画は自動的に上下黒背景で縦長内に収まる) -->
-                    <div class="relative w-16 h-24 sm:w-20 sm:h-28 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800/80 flex items-center justify-center">
+                    <div class="relative w-16 h-24 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center">
                         <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-contain bg-black pointer-events-none"></video>
                         <div class="absolute bottom-1 left-1 right-1 flex justify-center pointer-events-none">
-                            <span class="text-[9px] text-gray-300 font-mono bg-black/80 px-1 py-0.2 rounded">0:00</span>
+                            <span class="text-[8px] text-gray-300 font-mono bg-black/80 px-1 rounded">0:00</span>
                         </div>
                     </div>
 
-                    <!-- 2. タイトル、説明文、生URLテキスト (サイズダウン) -->
                     <div class="flex-1 min-w-0 pr-6">
-                        <h3 class="text-white font-bold text-xs sm:text-sm truncate group-hover:text-emerald-400 transition">${link.title}</h3>
-                        <p class="text-[11px] sm:text-xs text-gray-400/80 mt-0.5 line-clamp-2 leading-relaxed">${link.description}</p>
+                        <h3 class="text-white font-bold text-xs truncate">${link.title}</h3>
+                        <p class="text-[11px] text-gray-400 mt-0.5 line-clamp-2 leading-tight">${link.description}</p>
 
-                        <!-- 生URL -->
                         <div class="mt-1.5">
-                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-[10px] sm:text-[11px] text-emerald-400 hover:text-emerald-300 underline break-all inline-flex items-center space-x-1 font-mono">
-                                <span>${link.url}</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-1"></i>
+                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-[10px] text-emerald-400 hover:text-emerald-300 underline break-all inline-flex items-center space-x-1 font-mono">
+                                <span class="truncate">${link.url}</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[8px] ml-1 shrink-0"></i>
                             </a>
                         </div>
                     </div>
 
-                    <!-- 3. 保存（ブックマーク）ボタン (コンパクト化) -->
-                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-2.5 right-2.5 text-base transition cursor-pointer p-1.5 hover:scale-110">
-                        <i class="${isSaved ? 'fa-solid fa-bookmark text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'fa-regular fa-bookmark text-gray-500 hover:text-amber-400'}"></i>
+                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-2 right-2 text-sm p-1.5 active:scale-125 transition">
+                        <i class="${isSaved ? 'fa-solid fa-bookmark text-amber-400' : 'fa-regular fa-bookmark text-gray-500'}"></i>
                     </button>
                 `;
 
@@ -486,19 +521,17 @@
             });
         }
 
-        /**
-         * ★ 保存したリンク一覧の動的描画
-         */
         function renderSavedLinks() {
             const container = document.getElementById('saved-links-container');
+            if (!container) return;
             container.innerHTML = '';
 
             const savedItems = LINK_LIST.filter(link => savedLinkIds.includes(link.id));
 
             if (savedItems.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-10 text-gray-500">
-                        <i class="fa-regular fa-bookmark text-3xl mb-2 block"></i>
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fa-regular fa-bookmark text-2xl mb-1 block"></i>
                         <p class="text-xs">保存されているリンクはありません</p>
                     </div>
                 `;
@@ -507,26 +540,23 @@
 
             savedItems.forEach(link => {
                 const card = document.createElement('div');
-                card.className = 'p-2.5 bg-gray-900/90 border border-amber-500/20 rounded-xl flex items-center justify-between space-x-3';
+                card.className = 'p-2.5 bg-gray-900/90 border border-amber-500/20 rounded-xl flex items-center justify-between space-x-2';
 
                 card.innerHTML = `
-                    <div class="flex items-center space-x-3 min-w-0 flex-1">
-                        <!-- 縦長統一サムネイル -->
+                    <div class="flex items-center space-x-2.5 min-w-0 flex-1">
                         <div class="w-12 h-16 rounded-md overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center">
                             <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-contain bg-black"></video>
                         </div>
 
-                        <!-- タイトル & 説明文 -->
                         <div class="min-w-0 flex-1">
                             <h4 class="text-xs font-bold text-white truncate">${link.title}</h4>
-                            <p class="text-[11px] text-gray-400 ellipsis-text mt-0.5 pr-2">${link.description}</p>
+                            <p class="text-[10px] text-gray-400 ellipsis-text mt-0.5 pr-1">${link.description}</p>
                         </div>
                     </div>
 
-                    <!-- 移動ボタン -->
-                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-2.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-[11px] rounded-lg transition cursor-pointer shrink-0 flex items-center space-x-1">
+                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-2.5 py-1.5 bg-amber-500/20 active:bg-amber-500/40 border border-amber-500/40 text-amber-300 font-bold text-[10px] rounded-lg transition shrink-0 flex items-center space-x-1">
                         <span>移動</span>
-                        <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                        <i class="fa-solid fa-chevron-right text-[8px]"></i>
                     </button>
                 `;
 
@@ -534,57 +564,6 @@
             });
         }
 
-        /**
-         * ★ 保存したリンク一覧の動的描画
-         */
-        function renderSavedLinks() {
-            const container = document.getElementById('saved-links-container');
-            container.innerHTML = '';
-
-            const savedItems = LINK_LIST.filter(link => savedLinkIds.includes(link.id));
-
-            if (savedItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fa-regular fa-bookmark text-4xl mb-3 block"></i>
-                        <p class="text-sm">保存されているリンクはありません</p>
-                    </div>
-                `;
-                return;
-            }
-
-            savedItems.forEach(link => {
-                const card = document.createElement('div');
-                card.className = 'p-4 bg-gray-900/90 border border-amber-500/20 rounded-2xl flex items-center justify-between space-x-4';
-
-                card.innerHTML = `
-                    <div class="flex items-center space-x-4 min-w-0 flex-1">
-                        <!-- 動画サムネイル -->
-                        <div class="w-16 h-12 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800">
-                            <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-cover"></video>
-                        </div>
-
-                        <!-- タイトル & 説明文（移動ボタンと被らないよう省略処理） -->
-                        <div class="min-w-0 flex-1">
-                            <h4 class="text-sm font-bold text-white truncate">${link.title}</h4>
-                            <p class="text-xs text-gray-400 ellipsis-text mt-0.5 pr-2">${link.description}</p>
-                        </div>
-                    </div>
-
-                    <!-- 移動ボタン -->
-                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-3.5 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-xs rounded-xl transition cursor-pointer shrink-0 flex items-center space-x-1">
-                        <span>移動</span>
-                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </button>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        /**
-         * リンクの保存（ブックマーク）のオン/オフ
-         */
         function toggleSaveLink(id) {
             if (savedLinkIds.includes(id)) {
                 savedLinkIds = savedLinkIds.filter(savedId => savedId !== id);
@@ -596,9 +575,6 @@
             renderAllLinks();
         }
 
-        /**
-         * 保存画面の「移動」を押した時にAll Link一覧内の該当位置へスムーズスクロール
-         */
         function scrollToLinkInAllLinks(id) {
             switchView('all-links');
 
@@ -609,17 +585,25 @@
                     targetCard.classList.add('highlight-card');
                     setTimeout(() => targetCard.classList.remove('highlight-card'), 2000);
                 }
-            }, 100);
+            }, 150);
         }
 
-        /**
-         * ログアウト
-         */
         function logout() {
-            window.location.href = REDIRECT_URI;
+            sessionStorage.removeItem('discord_access_token');
+            currentUser = null;
+            userRoles = [];
+            document.getElementById('user-header').classList.add('hidden');
+            switchView('login');
         }
 
-        // 初期化：OAuth リダイレクトの検出
+        window.addEventListener('click', (e) => {
+            const header = document.getElementById('user-header');
+            if (header && !header.contains(e.target)) {
+                const dropdown = document.getElementById('user-menu-dropdown');
+                if (dropdown) dropdown.classList.add('hidden');
+            }
+        });
+
         window.addEventListener('DOMContentLoaded', handleOAuthCallback);
     </script>
 </body>
