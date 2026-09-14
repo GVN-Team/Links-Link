@@ -409,6 +409,8 @@
                     if (hasRole) {
                         document.getElementById('has-role-view').classList.remove('hidden');
                         document.getElementById('user-header').classList.remove('hidden');
+                        // ロールを保有している場合は最初からリンク一覧（All Link）を表示
+                        switchView('all-links');
                     } else {
                         document.getElementById('no-role-view').classList.remove('hidden');
                     }
@@ -426,90 +428,7 @@
         }
 
         /**
-         * ユーザーUIの更新
-         */
-        function updateUserInfoUI(user) {
-            const avatarUrl = user.avatar 
-                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-                : `https://cdn.discordapp.com/embed/avatars/0.png`;
-
-            // アバター画像
-            document.getElementById('nav-user-avatar').src = avatarUrl;
-            document.getElementById('user-avatar').src = avatarUrl;
-            document.getElementById('acc-avatar').src = avatarUrl;
-
-            // テキスト情報
-            document.getElementById('user-name').textContent = user.username;
-            document.getElementById('acc-username').textContent = user.username;
-            document.getElementById('menu-user-name').textContent = user.username;
-
-            const idStr = `@${user.username} (ID: ${user.id})`;
-            document.getElementById('user-id').textContent = idStr;
-            document.getElementById('acc-id').textContent = `ID: ${user.id}`;
-            document.getElementById('menu-user-id').textContent = `ID: ${user.id}`;
-
-            renderAccountRoles();
-        }
-
-        /**
-         * アカウント設定画面での所持ロール一覧の描画
-         */
-        function renderAccountRoles() {
-            const container = document.getElementById('acc-roles-container');
-            container.innerHTML = '';
-
-            if (userRoles.length === 0) {
-                container.innerHTML = '<span class="text-xs text-gray-500">ロールが見つかりませんでした</span>';
-                return;
-            }
-
-            userRoles.forEach(roleId => {
-                const badge = document.createElement('span');
-                if (roleId === REQUIRED_ROLE_ID) {
-                    badge.className = 'px-3 py-1 bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 rounded-lg text-xs font-bold flex items-center space-x-1';
-                    badge.innerHTML = '<i class="fa-solid fa-shield-halved text-xs mr-1"></i>Link Member';
-                } else {
-                    badge.className = 'px-3 py-1 bg-gray-800 border border-gray-700 text-gray-300 rounded-lg text-xs font-mono';
-                    badge.textContent = `Role: ${roleId}`;
-                }
-                container.appendChild(badge);
-            });
-        }
-
-        /**
-         * ビュー（画面表示）の切り替え
-         */
-        function switchView(viewName) {
-            document.getElementById('user-menu-dropdown').classList.add('hidden');
-
-            const views = ['login-view', 'auth-status-view', 'account-settings-view', 'saved-links-view', 'all-links-view'];
-            views.forEach(v => document.getElementById(v).classList.add('hidden'));
-
-            if (viewName === 'account-settings') {
-                document.getElementById('account-settings-view').classList.remove('hidden');
-            } else if (viewName === 'saved-links') {
-                renderSavedLinks();
-                document.getElementById('saved-links-view').classList.remove('hidden');
-            } else if (viewName === 'all-links') {
-                renderAllLinks();
-                document.getElementById('all-links-view').classList.remove('hidden');
-            } else if (viewName === 'auth-status') {
-                document.getElementById('auth-status-view').classList.remove('hidden');
-            } else {
-                document.getElementById('login-view').classList.remove('hidden');
-            }
-        }
-
-        /**
-         * 右上ユーザーメニューのトグル表示
-         */
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('user-menu-dropdown');
-            dropdown.classList.toggle('hidden');
-        }
-
-        /**
-         * ★ All Link 一覧の動的描画 (TikTok風保存ボタン & mp4動画0:00秒切取りサムネ & URLリンク表示)
+         * ★ All Link 一覧の動的描画 (コンパクトデザイン & 統一された縦長サムネイル枠)
          */
         function renderAllLinks() {
             const container = document.getElementById('all-links-container');
@@ -519,34 +438,82 @@
                 const isSaved = savedLinkIds.includes(link.id);
                 const card = document.createElement('div');
                 card.id = `link-card-${link.id}`;
-                card.className = 'p-4 sm:p-5 bg-gray-900/90 border border-gray-800 hover:border-emerald-500/40 rounded-2xl transition relative flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-5 group';
+                card.className = 'p-3 bg-gray-900/90 border border-gray-800 hover:border-emerald-500/40 rounded-xl transition relative flex items-center space-x-3 group';
 
                 card.innerHTML = `
-                    <!-- 1. 動画 0:00秒自動切り取りサムネイル -->
-                    <div class="relative w-full sm:w-36 h-28 sm:h-24 rounded-xl overflow-hidden bg-black shrink-0 border border-gray-800">
-                        <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-cover pointer-events-none"></video>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
-                            <span class="text-[10px] text-gray-300 font-mono bg-black/70 px-1.5 py-0.5 rounded">0:00</span>
+                    <!-- 1. 縦長統一サムネイル枠 (横長動画は自動的に上下黒背景で縦長内に収まる) -->
+                    <div class="relative w-16 h-24 sm:w-20 sm:h-28 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800/80 flex items-center justify-center">
+                        <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-contain bg-black pointer-events-none"></video>
+                        <div class="absolute bottom-1 left-1 right-1 flex justify-center pointer-events-none">
+                            <span class="text-[9px] text-gray-300 font-mono bg-black/80 px-1 py-0.2 rounded">0:00</span>
                         </div>
                     </div>
 
-                    <!-- 2. タイトル、半透明説明文、生URLテキスト -->
-                    <div class="flex-1 min-w-0 w-full pr-8">
-                        <h3 class="text-white font-bold text-base sm:text-lg truncate group-hover:text-emerald-400 transition">${link.title}</h3>
-                        <p class="text-xs text-gray-400/80 mt-1 line-clamp-2">${link.description}</p>
+                    <!-- 2. タイトル、説明文、生URLテキスト (サイズダウン) -->
+                    <div class="flex-1 min-w-0 pr-6">
+                        <h3 class="text-white font-bold text-xs sm:text-sm truncate group-hover:text-emerald-400 transition">${link.title}</h3>
+                        <p class="text-[11px] sm:text-xs text-gray-400/80 mt-0.5 line-clamp-2 leading-relaxed">${link.description}</p>
 
-                        <!-- 生URL（直接クリックして遷移可能） -->
-                        <div class="mt-2.5">
-                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-xs text-emerald-400 hover:text-emerald-300 underline break-all inline-flex items-center space-x-1 font-mono">
+                        <!-- 生URL -->
+                        <div class="mt-1.5">
+                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-[10px] sm:text-[11px] text-emerald-400 hover:text-emerald-300 underline break-all inline-flex items-center space-x-1 font-mono">
                                 <span>${link.url}</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-1"></i>
                             </a>
                         </div>
                     </div>
 
-                    <!-- 3. TikTok風 保存（ブックマーク）マーク -->
-                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-4 right-4 text-xl transition cursor-pointer p-2 hover:scale-125">
+                    <!-- 3. 保存（ブックマーク）ボタン (コンパクト化) -->
+                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-2.5 right-2.5 text-base transition cursor-pointer p-1.5 hover:scale-110">
                         <i class="${isSaved ? 'fa-solid fa-bookmark text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'fa-regular fa-bookmark text-gray-500 hover:text-amber-400'}"></i>
+                    </button>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * ★ 保存したリンク一覧の動的描画
+         */
+        function renderSavedLinks() {
+            const container = document.getElementById('saved-links-container');
+            container.innerHTML = '';
+
+            const savedItems = LINK_LIST.filter(link => savedLinkIds.includes(link.id));
+
+            if (savedItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-gray-500">
+                        <i class="fa-regular fa-bookmark text-3xl mb-2 block"></i>
+                        <p class="text-xs">保存されているリンクはありません</p>
+                    </div>
+                `;
+                return;
+            }
+
+            savedItems.forEach(link => {
+                const card = document.createElement('div');
+                card.className = 'p-2.5 bg-gray-900/90 border border-amber-500/20 rounded-xl flex items-center justify-between space-x-3';
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 min-w-0 flex-1">
+                        <!-- 縦長統一サムネイル -->
+                        <div class="w-12 h-16 rounded-md overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center">
+                            <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-contain bg-black"></video>
+                        </div>
+
+                        <!-- タイトル & 説明文 -->
+                        <div class="min-w-0 flex-1">
+                            <h4 class="text-xs font-bold text-white truncate">${link.title}</h4>
+                            <p class="text-[11px] text-gray-400 ellipsis-text mt-0.5 pr-2">${link.description}</p>
+                        </div>
+                    </div>
+
+                    <!-- 移動ボタン -->
+                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-2.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-[11px] rounded-lg transition cursor-pointer shrink-0 flex items-center space-x-1">
+                        <span>移動</span>
+                        <i class="fa-solid fa-chevron-right text-[9px]"></i>
                     </button>
                 `;
 
