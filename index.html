@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord ログイン</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800;900&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+        }
 
+        body {
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* 画面中央に青白く力強くネオン発光する本番用ログインボタン */
+        .discord-neon-btn {
+            background: linear-gradient(135deg, #5865F2 0%, #7983F5 40%, #D0DBFF 100%);
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.95), 0 0 24px rgba(88, 101, 242, 1);
+            box-shadow: 
+                0 0 25px rgba(88, 101, 242, 0.9),
+                0 0 55px rgba(135, 160, 255, 0.85),
+                0 0 95px rgba(255, 255, 255, 0.7),
+                inset 0 0 20px rgba(255, 255, 255, 0.85);
+            animation: intenseNeonPulse 2.5s infinite alternate ease-in-out;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .discord-neon-btn:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 
+                0 0 35px rgba(88, 101, 242, 1),
+                0 0 75px rgba(150, 180, 255, 1),
+                0 0 130px rgba(255, 255, 255, 1),
+                inset 0 0 30px rgba(255, 255, 255, 1);
+            filter: brightness(1.2);
+        }
+
+        .discord-neon-btn:active {
+            transform: scale(0.97) translateY(1px);
+        }
+
+        @keyframes intenseNeonPulse {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(88, 101, 242, 0.85),
+                    0 0 45px rgba(120, 140, 255, 0.6),
+                    0 0 75px rgba(255, 255, 255, 0.5),
+                    inset 0 0 15px rgba(255, 255, 255, 0.7);
+            }
+            100% {
+                box-shadow: 
+                    0 0 45px rgba(88, 101, 242, 1),
+                    0 0 85px rgba(160, 185, 255, 0.9),
+                    0 0 125px rgba(255, 255, 255, 0.85),
+                    inset 0 0 28px rgba(255, 255, 255, 0.95);
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen w-screen relative">
+
+    <!-- ログイン前：真っ黒な画面の中央に配置された青白く光るボタンのみ -->
+    <div id="login-section" class="flex flex-col items-center justify-center z-10 p-4">
+        <button onclick="loginWithDiscord()" class="discord-neon-btn px-10 py-5 sm:px-14 sm:py-6 rounded-3xl text-xl sm:text-2xl font-black flex items-center justify-center space-x-4 tracking-wider select-none cursor-pointer">
+            <i class="fa-brands fa-discord text-3xl sm:text-4xl drop-shadow-[0_0_10px_rgba(255,255,255,1)]"></i>
+            <span>Discordでログイン</span>
+        </button>
+    </div>
+
+    <!-- ログイン成功後：リンク集カードを表示（初期状態は非表示） -->
+    <div id="links-section" class="hidden w-full max-w-md p-4 z-10">
+        <div class="bg-gradient-to-b from-[#11121c] to-[#0a0b10] border border-[#5865F2]/40 rounded-3xl p-6 shadow-[0_0_50px_rgba(88,101,242,0.25)] text-center">
+            <!-- ユーザープロフィール -->
+            <img id="user-avatar" class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-[#5865F2] shadow-[0_0_15px_rgba(88,101,242,0.6)]" src="" alt="Avatar">
+            <h1 id="user-name" class="text-2xl font-extrabold text-white"></h1>
+            <p id="user-id" class="text-xs text-indigo-300/70 font-mono mt-1 mb-6"></p>
+
+            <!-- リンク集一覧 -->
+            <div class="space-y-3 text-left">
+                <a href="https://discord.gg" target="_blank" class="block p-4 bg-gray-900/80 hover:bg-gray-800/90 rounded-2xl border border-gray-800 transition flex items-center space-x-4 group">
+                    <div class="w-10 h-10 rounded-xl bg-[#5865F2]/20 flex items-center justify-center text-[#5865F2] group-hover:scale-110 transition">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-sm">公式 Discord コミュニティ</div>
+                        <div class="text-xs text-gray-400">メンバー限定サーバーへ参加</div>
+                    </div>
+                </a>
+
+                <a href="https://github.com" target="_blank" class="block p-4 bg-gray-900/80 hover:bg-gray-800/90 rounded-2xl border border-gray-800 transition flex items-center space-x-4 group">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:scale-110 transition">
+                        <i class="fa-brands fa-github text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-bold text-sm">GitHub</div>
+                        <div class="text-xs text-gray-400">プロジェクトリポジトリ</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- ログアウトボタン -->
+            <button onclick="logout()" class="mt-8 text-xs text-red-400 hover:text-red-300 font-semibold tracking-wide transition">
+                <i class="fa-solid fa-right-from-bracket mr-1"></i>ログアウト
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // CLIENT_ID と REDIRECT_URI の設定
+        const CLIENT_ID = '1549006862576390195';
+        const REDIRECT_URI = window.location.origin + window.location.pathname;
+
+        /**
+         * Discord OAuth2 (Implicit Grant Flow) ログインを開始
+         * ※ Web Server 不要。Client Secret なしでブラウザのハッシュにアクセストークンが直接返却されます。
+         */
+        function loginWithDiscord() {
+            const scope = encodeURIComponent('identify guilds guilds.members.read');
+            const redirect = encodeURIComponent(REDIRECT_URI);
+            
+            // Implicit Grant Flow (response_type=token)
+            const authUrl = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${redirect}&scope=${scope}`;
+            
+            window.location.href = authUrl;
+        }
+
+        /**
+         * URLハッシュ (#access_token=...) を解析して Discord API からユーザー情報を取得
+         */
+        async function handleOAuthCallback() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+
+            if (accessToken) {
+                try {
+                    // アクセストークンを使って Discord の本物のユーザー情報を取得
+                    const res = await fetch('https://discord.com/api/v10/users/@me', {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    });
+
+                    if (!res.ok) throw new Error('ユーザー情報の取得に失敗しました');
+
+                    const user = await res.json();
+                    
+                    // ログイン前の「ボタンのみ」を非表示にし、リンク集を表示
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('links-section').classList.remove('hidden');
+
+                    // 取得したユーザー情報の反映
+                    document.getElementById('user-name').textContent = user.username;
+                    document.getElementById('user-id').textContent = `@${user.username} (ID: ${user.id})`;
+                    
+                    const avatarUrl = user.avatar 
+                        ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                        : `https://cdn.discordapp.com/embed/avatars/0.png`;
+                    document.getElementById('user-avatar').src = avatarUrl;
+
+                    // URLのハッシュパラメータを削除してきれいにする
+                    history.replaceState(null, null, ' ');
+
+                } catch (error) {
+                    console.error('認証エラー:', error);
+                    alert('Discord認証に失敗しました。再度ログインをお試しください。');
+                }
+            }
+        }
+
+        function logout() {
+            window.location.href = REDIRECT_URI;
+        }
+
+        // ページロード時にリダイレクトバックのトークン存在をチェック
+        window.addEventListener('DOMContentLoaded', handleOAuthCallback);
+    </script>
+</body>
+</html>
