@@ -2,6 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="manifest" href="https://raw.githubusercontent.com/GVN-Team/UjFaT0xVMVFOQzFGYm1OdlpHVXRjbVZ6ZEc5eVpTMUtjMnBrYUZOb1oyUm5SR2hvWkNOZEkzMGxY-U1Y3ZTExN1hRPT0-/refs/heads/main/All.Link.json" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/GVN-Team/icons./refs/heads/icons/058ED449-2810-4F2A-929D-781F35B2C9D4.png?v=3" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/GVN-Team/icons./refs/heads/icons/058ED449-2810-4F2A-929D-781F35B2C9D4.png?v=3" />
+    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/GVN-Team/icons./refs/heads/icons/058ED449-2810-4F2A-929D-781F35B2C9D4.png?v=3" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GVN Like Service</title>
     <!-- Tailwind CSS CDN -->
@@ -10,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
-    
+
     <style>
         * {
             box-sizing: border-box;
@@ -41,7 +45,7 @@
             filter: brightness(1.08);
         }
 
-        /* Glassmorphism Card Style (アカウント設定・保存リンク用) */
+        /* Glassmorphism Card Style */
         .glass-panel {
             background: rgba(13, 14, 22, 0.85);
             backdrop-filter: blur(16px);
@@ -68,184 +72,16 @@
         }
     </style>
 </head>
-<body class="bg-black text-white min-h-[100dvh] h-[100dvh] flex flex-col justify-between relative overflow-x-hidden">
-
-    <!-- 画面右上：丸い自分のアバターアイコンのみ（タップでメニュー表示） -->
-    <header id="user-header" class="hidden fixed top-3 right-3 z-50">
-        <div class="relative">
-            <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full border-2 border-[#5865F2] overflow-hidden focus:outline-none shadow-lg active:scale-95 transition cursor-pointer">
-                <img id="nav-user-avatar" src="" alt="Avatar" class="w-full h-full object-cover">
-            </button>
-
-            <!-- ドロップダウンメニュー -->
-            <div id="user-menu-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-[#0f1017] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden py-2 z-50">
-                <div class="px-4 py-2.5 border-b border-gray-800/80">
-                    <p id="menu-user-name" class="text-xs font-bold text-white truncate"></p>
-                    <p id="menu-user-id" class="text-[9px] text-gray-400 font-mono truncate"></p>
-                </div>
-                
-                <div class="py-1">
-                    <button onclick="switchView('account-settings')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-indigo-600/30 flex items-center space-x-3 transition cursor-pointer">
-                        <i class="fa-solid fa-gear text-indigo-400 w-4"></i>
-                        <span class="font-bold">アカウント設定</span>
-                    </button>
-                    <button onclick="switchView('saved-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-amber-600/30 flex items-center space-x-3 transition cursor-pointer">
-                        <i class="fa-solid fa-bookmark text-amber-400 w-4"></i>
-                        <span class="font-bold">保存したリンク</span>
-                    </button>
-                    <button onclick="switchView('all-links')" class="w-full text-left px-4 py-2 text-xs text-gray-200 active:bg-emerald-600/30 flex items-center space-x-3 transition cursor-pointer">
-                        <i class="fa-solid fa-list-check text-emerald-400 w-4"></i>
-                        <span class="font-bold">All Link 一覧</span>
-                    </button>
-                </div>
-
-                <div class="border-t border-gray-800/80 pt-1 mt-1">
-                    <button onclick="logout()" class="w-full text-left px-4 py-2 text-xs text-red-500 active:bg-red-950/40 font-bold flex items-center space-x-3 transition cursor-pointer">
-                        <i class="fa-solid fa-right-from-bracket w-4"></i>
-                        <span>ログアウト</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- メインコンテンツコンテナ -->
-    <main class="flex-grow flex items-center justify-center p-3 relative z-10 w-full max-w-2xl mx-auto h-full">
-
-        <!-- 1. ログイン前：画面中央のログインボタン（上品で控えめな青白発光） -->
-        <section id="login-view" class="flex flex-col items-center justify-center w-full h-full my-auto">
-            <button onclick="loginWithDiscord()" class="discord-btn px-8 py-4 sm:px-10 sm:py-4 rounded-2xl text-base sm:text-lg font-extrabold flex items-center justify-center space-x-3 tracking-wider select-none cursor-pointer active:scale-95">
-                <i class="fa-brands fa-discord text-xl sm:text-2xl"></i>
-                <span>Discordでログイン</span>
-            </button>
-        </section>
-
-        <!-- 2. 認証ステータス & ロール判定 画面 -->
-        <section id="auth-status-view" class="hidden w-full max-w-md my-auto">
-            <div class="glass-panel rounded-3xl p-6 text-center shadow-[0_0_50px_rgba(88,101,242,0.15)] relative">
-                <!-- ローダー -->
-                <div id="checking-loader" class="py-10">
-                    <i class="fa-solid fa-circle-notch fa-spin text-3xl text-[#5865F2] mb-3"></i>
-                    <p class="text-xs font-semibold text-gray-300">サーバー権限を確認中...</p>
-                </div>
-
-                <!-- エラー表示領域 -->
-                <div id="error-message-box" class="hidden p-3 mb-4 bg-red-900/50 border border-red-500/80 rounded-xl text-red-200 text-xs text-left">
-                    <p class="font-bold flex items-center"><i class="fa-solid fa-circle-exclamation mr-1.5"></i>エラーが発生しました</p>
-                    <p id="error-message-text" class="mt-1 text-[11px] font-mono break-all"></p>
-                </div>
-
-                <!-- ステータスコンテンツ -->
-                <div id="status-content" class="hidden">
-                    <img id="user-avatar" class="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-[#5865F2] shadow-[0_0_15px_rgba(88,101,242,0.5)]" src="" alt="Avatar">
-                    <h1 id="user-name" class="text-lg font-extrabold text-white"></h1>
-                    <p id="user-id" class="text-[10px] text-indigo-300/70 font-mono mt-0.5 mb-4"></p>
-
-                    <!-- ロールなし (赤文字 & 権限購入案内) -->
-                    <div id="no-role-view" class="hidden space-y-3 my-4 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl">
-                        <p class="text-red-500 font-black text-base sm:text-lg tracking-wide">
-                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>Link Memberロールがありません
-                        </p>
-                        <div class="text-xs text-gray-300 space-y-1">
-                            <a href="https://discord.gg/9hZdjpQAw" target="_blank" class="text-red-400 hover:text-red-300 underline font-bold break-all block py-1">
-                                https://discord.gg/9hZdjpQAw
-                            </a>
-                            <p>権限を購入してください</p>
-                        </div>
-                    </div>
-
-                    <!-- ロールあり (緑文字 & All Link ボタン) -->
-                    <div id="has-role-view" class="hidden space-y-4 my-4">
-                        <div class="inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-950/60 border border-emerald-500/60 rounded-full text-emerald-400 font-extrabold text-sm tracking-wider">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <span>Link Member</span>
-                        </div>
-
-                        <div>
-                            <button onclick="switchView('all-links')" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-gray-950 font-black text-base tracking-wider cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.4)] active:scale-95 transition flex items-center justify-center space-x-2">
-                                <i class="fa-solid fa-list-check text-lg"></i>
-                                <span>All Link</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. アカウント設定 画面 -->
-        <section id="account-settings-view" class="hidden w-full my-4">
-            <div class="glass-panel rounded-3xl p-5 border border-indigo-500/30">
-                <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-4">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
-                            <i class="fa-solid fa-user-gear text-sm"></i>
-                        </div>
-                        <h2 class="text-base font-black text-white">アカウント設定</h2>
-                    </div>
-                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition cursor-pointer">
-                        <i class="fa-solid fa-arrow-left mr-1"></i>戻る
-                    </button>
-                </div>
-
-                <div class="space-y-4">
-                    <!-- アバターと基本情報 -->
-                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 text-center flex flex-col items-center justify-center">
-                        <img id="acc-avatar" class="w-16 h-16 rounded-full border-2 border-indigo-500 mb-2 shadow-[0_0_15px_rgba(99,102,241,0.3)]" src="" alt="Avatar">
-                        <h3 id="acc-username" class="text-base font-bold text-white"></h3>
-                        <p id="acc-id" class="text-[10px] text-indigo-300 font-mono mt-0.5"></p>
-                    </div>
-
-                    <!-- 所持ロール一覧 -->
-                    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4">
-                        <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center">
-                            <i class="fa-solid fa-id-badge text-indigo-400 mr-1.5"></i>所持しているロール
-                        </h4>
-                        <div id="acc-roles-container" class="flex flex-wrap gap-1.5">
-                            <!-- JSで動的描画 -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. 保存したリンク一覧 画面 -->
-        <section id="saved-links-view" class="hidden w-full my-4">
-            <div class="glass-panel rounded-3xl p-5 border border-amber-500/30">
-                <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-4">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-                            <i class="fa-solid fa-bookmark text-sm"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-base font-black text-white">保存したリンク</h2>
-                        </div>
-                    </div>
-                    <button onclick="switchView('all-links')" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition cursor-pointer">
-                        <i class="fa-solid fa-arrow-left mr-1"></i>戻る
-                    </button>
-                </div>
-
-                <div id="saved-links-container" class="space-y-3">
-                    <!-- Dynamic Saved Links Here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. All Link (メインリンク集一覧) 画面 - 大きな外枠ボックスを無くしすっきり配置 -->
-        <section id="all-links-view" class="hidden w-full my-4">
-            <div id="all-links-container" class="space-y-3">
-                <!-- Dynamic Render All Links -->
-            </div>
-        </section>
-
-    </main>
-
+<body>
+    <!-- すべてのレイアウトは下の JavaScript で描画されます -->
     <script>
-        // 設定定数
+        /* =====================================================
+         * 設定定数
+         * ===================================================== */
         const CLIENT_ID = '1549006862576390195';
         const TARGET_SERVER_ID = '1545048902032556173';
         const REQUIRED_ROLE_ID = '1549026062015529031';
-        
+
         // redirect_uri は現在のページURLの末尾のパラメータを除いたクリーンな原点URL
         const REDIRECT_URI = window.location.origin + window.location.pathname;
 
@@ -276,14 +112,233 @@
             }
         ];
 
-        // 状態管理
+        /* =====================================================
+         * 状態管理
+         * ===================================================== */
         let currentUser = null;
         let userRoles = [];
         let savedLinkIds = JSON.parse(localStorage.getItem('saved_link_ids') || '[]');
 
+        // 描画した要素への参照
+        const ui = {};
+
+        /* =====================================================
+         * DOM 生成ヘルパー
+         * ===================================================== */
+        function h(tag, props, ...children) {
+            const el = document.createElement(tag);
+            for (const [key, value] of Object.entries(props || {})) {
+                if (value === null || value === undefined || value === false) continue;
+                if (key === 'class') {
+                    el.className = value;
+                } else if (key.startsWith('on') && typeof value === 'function') {
+                    el.addEventListener(key.slice(2), value);
+                } else {
+                    el.setAttribute(key, value === true ? '' : value);
+                }
+            }
+            appendChildren(el, children);
+            return el;
+        }
+
+        function appendChildren(el, children) {
+            children.forEach(child => {
+                if (child === null || child === undefined || child === false) return;
+                if (Array.isArray(child)) {
+                    appendChildren(el, child);
+                } else if (child instanceof Node) {
+                    el.appendChild(child);
+                } else {
+                    el.appendChild(document.createTextNode(String(child)));
+                }
+            });
+        }
+
+        const icon = (cls) => h('i', { class: cls });
+
+        /* =====================================================
+         * レイアウト描画
+         * ===================================================== */
+
+        // 右上アバター + ドロップダウンメニュー
+        function buildHeader() {
+            ui.navAvatar = h('img', { alt: 'Avatar', class: 'w-full h-full object-cover' });
+            ui.menuUserName = h('p', { class: 'text-xs font-bold text-white truncate' });
+            ui.menuUserId = h('p', { class: 'text-[9px] text-gray-400 font-mono truncate' });
+
+            const menuItem = (iconCls, activeCls, label, onClick) =>
+                h('button', {
+                    class: `w-full text-left px-4 py-2 text-xs text-gray-200 ${activeCls} flex items-center space-x-3 transition cursor-pointer`,
+                    onclick: onClick
+                }, icon(`${iconCls} w-4`), h('span', { class: 'font-bold' }, label));
+
+            ui.dropdown = h('div', {
+                class: 'hidden absolute right-0 mt-2 w-52 bg-[#0f1017] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden py-2 z-50'
+            },
+                h('div', { class: 'px-4 py-2.5 border-b border-gray-800/80' }, ui.menuUserName, ui.menuUserId),
+                h('div', { class: 'py-1' },
+                    menuItem('fa-solid fa-gear text-indigo-400', 'active:bg-indigo-600/30', 'アカウント設定', () => switchView('account-settings')),
+                    menuItem('fa-solid fa-bookmark text-amber-400', 'active:bg-amber-600/30', '保存したリンク', () => switchView('saved-links')),
+                    menuItem('fa-solid fa-list-check text-emerald-400', 'active:bg-emerald-600/30', 'All Link 一覧', () => switchView('all-links'))
+                ),
+                h('div', { class: 'border-t border-gray-800/80 pt-1 mt-1' },
+                    h('button', {
+                        class: 'w-full text-left px-4 py-2 text-xs text-red-500 active:bg-red-950/40 font-bold flex items-center space-x-3 transition cursor-pointer',
+                        onclick: logout
+                    }, icon('fa-solid fa-right-from-bracket w-4'), h('span', null, 'ログアウト')))
+            );
+
+            ui.header = h('header', { class: 'hidden fixed top-3 right-3 z-50' },
+                h('div', { class: 'relative' },
+                    h('button', {
+                        class: 'w-10 h-10 rounded-full border-2 border-[#5865F2] overflow-hidden focus:outline-none shadow-lg active:scale-95 transition cursor-pointer',
+                        onclick: toggleUserMenu
+                    }, ui.navAvatar),
+                    ui.dropdown
+                )
+            );
+            return ui.header;
+        }
+
+        // 1. ログイン画面
+        function buildLoginView() {
+            return h('section', { class: 'flex flex-col items-center justify-center w-full h-full my-auto' },
+                h('button', {
+                    class: 'discord-btn px-8 py-4 sm:px-10 sm:py-4 rounded-2xl text-base sm:text-lg font-extrabold flex items-center justify-center space-x-3 tracking-wider select-none cursor-pointer active:scale-95',
+                    onclick: loginWithDiscord
+                }, icon('fa-brands fa-discord text-xl sm:text-2xl'), h('span', null, 'Discordでログイン'))
+            );
+        }
+
+        // 2. 認証ステータス画面
+        function buildAuthStatusView() {
+            ui.checkingLoader = h('div', { class: 'py-10' },
+                icon('fa-solid fa-circle-notch fa-spin text-3xl text-[#5865F2] mb-3'),
+                h('p', { class: 'text-xs font-semibold text-gray-300' }, 'サーバー権限を確認中...')
+            );
+
+            ui.errorText = h('p', { class: 'mt-1 text-[11px] font-mono break-all' });
+            ui.errorBox = h('div', { class: 'hidden p-3 mb-4 bg-red-900/50 border border-red-500/80 rounded-xl text-red-200 text-xs text-left' },
+                h('p', { class: 'font-bold flex items-center' }, icon('fa-solid fa-circle-exclamation mr-1.5'), 'エラーが発生しました'),
+                ui.errorText
+            );
+
+            ui.userAvatar = h('img', {
+                alt: 'Avatar',
+                class: 'w-16 h-16 rounded-full mx-auto mb-2 border-2 border-[#5865F2] shadow-[0_0_15px_rgba(88,101,242,0.5)]'
+            });
+            ui.userName = h('h1', { class: 'text-lg font-extrabold text-white' });
+            ui.userId = h('p', { class: 'text-[10px] text-indigo-300/70 font-mono mt-0.5 mb-4' });
+
+            ui.noRoleView = h('div', { class: 'hidden space-y-3 my-4 p-4 bg-red-950/40 border border-red-500/50 rounded-2xl' },
+                h('p', { class: 'text-red-500 font-black text-base sm:text-lg tracking-wide' },
+                    icon('fa-solid fa-triangle-exclamation mr-1'), 'Link Memberロールがありません'),
+                h('div', { class: 'text-xs text-gray-300 space-y-1' },
+                    h('a', {
+                        href: 'https://discord.gg/9hZdjpQAw',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        class: 'text-red-400 hover:text-red-300 underline font-bold break-all block py-1'
+                    }, 'https://discord.gg/9hZdjpQAw'),
+                    h('p', null, '権限を購入してください'))
+            );
+
+            ui.hasRoleView = h('div', { class: 'hidden space-y-4 my-4' },
+                h('div', { class: 'inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-950/60 border border-emerald-500/60 rounded-full text-emerald-400 font-extrabold text-sm tracking-wider' },
+                    icon('fa-solid fa-shield-halved'), h('span', null, 'Link Member')),
+                h('div', null,
+                    h('button', {
+                        class: 'w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-gray-950 font-black text-base tracking-wider cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.4)] active:scale-95 transition flex items-center justify-center space-x-2',
+                        onclick: () => switchView('all-links')
+                    }, icon('fa-solid fa-list-check text-lg'), h('span', null, 'All Link')))
+            );
+
+            ui.statusContent = h('div', { class: 'hidden' },
+                ui.userAvatar, ui.userName, ui.userId, ui.noRoleView, ui.hasRoleView);
+
+            return h('section', { class: 'hidden w-full max-w-md my-auto' },
+                h('div', { class: 'glass-panel rounded-3xl p-6 text-center shadow-[0_0_50px_rgba(88,101,242,0.15)] relative' },
+                    ui.checkingLoader, ui.errorBox, ui.statusContent)
+            );
+        }
+
+        // 共通：「戻る」ボタン付きパネルヘッダー
+        function panelHeader(iconBox, iconCls, title) {
+            return h('div', { class: 'flex items-center justify-between pb-4 border-b border-gray-800 mb-4' },
+                h('div', { class: 'flex items-center space-x-2' },
+                    h('div', { class: `w-8 h-8 rounded-lg ${iconBox} flex items-center justify-center` }, icon(`${iconCls} text-sm`)),
+                    h('h2', { class: 'text-base font-black text-white' }, title)),
+                h('button', {
+                    class: 'px-3 py-1 bg-gray-800 hover:bg-gray-700 text-[11px] text-gray-300 rounded-lg transition cursor-pointer',
+                    onclick: () => switchView('all-links')
+                }, icon('fa-solid fa-arrow-left mr-1'), '戻る')
+            );
+        }
+
+        // 3. アカウント設定画面
+        function buildAccountSettingsView() {
+            ui.accAvatar = h('img', {
+                alt: 'Avatar',
+                class: 'w-16 h-16 rounded-full border-2 border-indigo-500 mb-2 shadow-[0_0_15px_rgba(99,102,241,0.3)]'
+            });
+            ui.accUsername = h('h3', { class: 'text-base font-bold text-white' });
+            ui.accId = h('p', { class: 'text-[10px] text-indigo-300 font-mono mt-0.5' });
+            ui.accRoles = h('div', { class: 'flex flex-wrap gap-1.5' });
+
+            return h('section', { class: 'hidden w-full my-4' },
+                h('div', { class: 'glass-panel rounded-3xl p-5 border border-indigo-500/30' },
+                    panelHeader('bg-indigo-500/20 border border-indigo-500/40 text-indigo-400', 'fa-solid fa-user-gear', 'アカウント設定'),
+                    h('div', { class: 'space-y-4' },
+                        h('div', { class: 'bg-gray-900/80 border border-gray-800 rounded-2xl p-4 text-center flex flex-col items-center justify-center' },
+                            ui.accAvatar, ui.accUsername, ui.accId),
+                        h('div', { class: 'bg-gray-900/80 border border-gray-800 rounded-2xl p-4' },
+                            h('h4', { class: 'text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center' },
+                                icon('fa-solid fa-id-badge text-indigo-400 mr-1.5'), '所持しているロール'),
+                            ui.accRoles)
+                    )
+                )
+            );
+        }
+
+        // 4. 保存したリンク画面
+        function buildSavedLinksView() {
+            ui.savedContainer = h('div', { class: 'space-y-3' });
+            return h('section', { class: 'hidden w-full my-4' },
+                h('div', { class: 'glass-panel rounded-3xl p-5 border border-amber-500/30' },
+                    panelHeader('bg-amber-500/20 border border-amber-500/40 text-amber-400', 'fa-solid fa-bookmark', '保存したリンク'),
+                    ui.savedContainer)
+            );
+        }
+
+        // 5. All Link 画面
+        function buildAllLinksView() {
+            ui.allContainer = h('div', { class: 'space-y-3' });
+            return h('section', { class: 'hidden w-full my-4' }, ui.allContainer);
+        }
+
+        // アプリ全体の組み立て
+        function buildApp() {
+            document.body.className = 'bg-black text-white min-h-[100dvh] h-[100dvh] flex flex-col justify-between relative overflow-x-hidden';
+            document.body.innerHTML = '';
+
+            ui.views = {
+                'login': buildLoginView(),
+                'auth-status': buildAuthStatusView(),
+                'account-settings': buildAccountSettingsView(),
+                'saved-links': buildSavedLinksView(),
+                'all-links': buildAllLinksView()
+            };
+
+            const main = h('main', { class: 'flex-grow flex items-center justify-center p-3 relative z-10 w-full max-w-2xl mx-auto h-full' },
+                Object.values(ui.views));
+
+            document.body.append(buildHeader(), main);
+        }
+
+        /* =====================================================
+         * ビュー切り替え・UI更新
+         * ===================================================== */
         function switchView(viewName) {
-            const views = ['login', 'auth-status', 'account-settings', 'saved-links', 'all-links'];
-            
             // ログイン画面の時は body の高さ固定・スクロール防止
             if (viewName === 'login') {
                 document.body.classList.add('h-[100dvh]', 'overflow-hidden');
@@ -291,70 +346,65 @@
                 document.body.classList.remove('h-[100dvh]', 'overflow-hidden');
             }
 
-            views.forEach(v => {
-                const el = document.getElementById(`${v}-view`);
-                if (el) {
-                    if (v === viewName) {
-                        el.classList.remove('hidden');
-                    } else {
-                        el.classList.add('hidden');
-                    }
-                }
+            Object.entries(ui.views).forEach(([name, el]) => {
+                el.classList.toggle('hidden', name !== viewName);
             });
 
-            const dropdown = document.getElementById('user-menu-dropdown');
-            if (dropdown) dropdown.classList.add('hidden');
+            ui.dropdown.classList.add('hidden');
 
             if (viewName === 'all-links') renderAllLinks();
             if (viewName === 'saved-links') renderSavedLinks();
         }
 
         function updateUserInfoUI(user) {
-            const avatarUrl = user.avatar 
+            const avatarUrl = user.avatar
                 ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-                : `https://cdn.discordapp.com/embed/avatars/0.png`;
+                : 'https://cdn.discordapp.com/embed/avatars/0.png';
+            const idText = `ID: ${user.id}`;
 
-            document.getElementById('nav-user-avatar').src = avatarUrl;
-            document.getElementById('menu-user-name').textContent = user.username;
-            document.getElementById('menu-user-id').textContent = `ID: ${user.id}`;
+            ui.navAvatar.src = avatarUrl;
+            ui.menuUserName.textContent = user.username;
+            ui.menuUserId.textContent = idText;
 
-            document.getElementById('user-avatar').src = avatarUrl;
-            document.getElementById('user-name').textContent = user.username;
-            document.getElementById('user-id').textContent = `ID: ${user.id}`;
+            ui.userAvatar.src = avatarUrl;
+            ui.userName.textContent = user.username;
+            ui.userId.textContent = idText;
 
-            document.getElementById('acc-avatar').src = avatarUrl;
-            document.getElementById('acc-username').textContent = user.username;
-            document.getElementById('acc-id').textContent = `ID: ${user.id}`;
+            ui.accAvatar.src = avatarUrl;
+            ui.accUsername.textContent = user.username;
+            ui.accId.textContent = idText;
         }
 
         function updateRolesUI(roles) {
-            const container = document.getElementById('acc-roles-container');
-            if (!container) return;
-            container.innerHTML = '';
+            ui.accRoles.innerHTML = '';
 
             if (!roles || roles.length === 0) {
-                container.innerHTML = `<span class="text-xs text-gray-500">所有ロールはありません</span>`;
+                ui.accRoles.appendChild(h('span', { class: 'text-xs text-gray-500' }, '所有ロールはありません'));
                 return;
             }
 
             roles.forEach(roleId => {
-                const badge = document.createElement('span');
-                if (roleId === REQUIRED_ROLE_ID) {
-                    badge.className = 'px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/40 rounded text-emerald-300 font-bold text-[10px]';
-                    badge.textContent = `★ Link Member (${roleId})`;
-                } else {
-                    badge.className = 'px-2 py-0.5 bg-indigo-500/20 border border-indigo-500/40 rounded text-indigo-300 font-mono text-[10px]';
-                    badge.textContent = `ID: ${roleId}`;
-                }
-                container.appendChild(badge);
+                const isRequired = roleId === REQUIRED_ROLE_ID;
+                ui.accRoles.appendChild(h('span', {
+                    class: isRequired
+                        ? 'px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/40 rounded text-emerald-300 font-bold text-[10px]'
+                        : 'px-2 py-0.5 bg-indigo-500/20 border border-indigo-500/40 rounded text-indigo-300 font-mono text-[10px]'
+                }, isRequired ? `★ Link Member (${roleId})` : `ID: ${roleId}`));
             });
         }
 
         function toggleUserMenu() {
-            const dropdown = document.getElementById('user-menu-dropdown');
-            if (dropdown) dropdown.classList.toggle('hidden');
+            ui.dropdown.classList.toggle('hidden');
         }
 
+        function showError(msg) {
+            ui.errorText.textContent = msg;
+            ui.errorBox.classList.remove('hidden');
+        }
+
+        /* =====================================================
+         * Discord 認証
+         * ===================================================== */
         function loginWithDiscord() {
             // Implicit Grant Flow (token) を使用して単一HTMLのみで動作させる
             const scope = encodeURIComponent('identify guilds guilds.members.read');
@@ -365,8 +415,8 @@
 
         async function handleOAuthCallback() {
             let accessToken = null;
-            
-            // 1. URLのハッシュ (#access_token=...) またはクエリからトークンを探す
+
+            // URLのハッシュ (#access_token=...) からトークンを探す
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
 
@@ -379,154 +429,155 @@
                 accessToken = sessionStorage.getItem('discord_access_token');
             }
 
-            if (accessToken) {
-                switchView('auth-status');
+            if (!accessToken) {
+                switchView('login');
+                return;
+            }
 
+            switchView('auth-status');
+
+            try {
+                // ユーザー情報取得
+                const userRes = await fetch('https://discord.com/api/v10/users/@me', {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
+
+                if (!userRes.ok) {
+                    sessionStorage.removeItem('discord_access_token');
+                    throw new Error('認証トークンの期限が切れました。再ログインしてください。');
+                }
+
+                currentUser = await userRes.json();
+                updateUserInfoUI(currentUser);
+
+                // サーバーメンバー情報（ロール一覧）の取得
+                let hasRole = false;
                 try {
-                    // ユーザー情報取得
-                    const userRes = await fetch('https://discord.com/api/v10/users/@me', {
+                    const memberRes = await fetch(`https://discord.com/api/v10/users/@me/guilds/${TARGET_SERVER_ID}/member`, {
                         headers: { Authorization: `Bearer ${accessToken}` }
                     });
-                    
-                    if (!userRes.ok) {
-                        sessionStorage.removeItem('discord_access_token');
-                        throw new Error('認証トークンの期限が切れました。再ログインしてください。');
-                    }
-                    
-                    currentUser = await userRes.json();
-                    updateUserInfoUI(currentUser);
 
-                    // サーバーメンバー情報（ロール一覧）の取得
-                    let hasRole = false;
-                    try {
-                        const memberRes = await fetch(`https://discord.com/api/v10/users/@me/guilds/${TARGET_SERVER_ID}/member`, {
-                            headers: { Authorization: `Bearer ${accessToken}` }
-                        });
-                        
-                        if (memberRes.ok) {
-                            const memberData = await memberRes.json();
-                            userRoles = memberData.roles || [];
-                            updateRolesUI(userRoles);
-                            if (userRoles.includes(REQUIRED_ROLE_ID)) {
-                                hasRole = true;
-                            }
+                    if (memberRes.ok) {
+                        const memberData = await memberRes.json();
+                        userRoles = memberData.roles || [];
+                        updateRolesUI(userRoles);
+                        if (userRoles.includes(REQUIRED_ROLE_ID)) {
+                            hasRole = true;
                         }
-                    } catch (err) {
-                        console.error('ロール取得失敗:', err);
                     }
-
-                    document.getElementById('checking-loader').classList.add('hidden');
-                    document.getElementById('status-content').classList.remove('hidden');
-
-                    if (hasRole) {
-                        document.getElementById('has-role-view').classList.remove('hidden');
-                        document.getElementById('user-header').classList.remove('hidden');
-                        // ロールがある場合は最初から全リンク画面を表示
-                        switchView('all-links');
-                    } else {
-                        document.getElementById('no-role-view').classList.remove('hidden');
-                        document.getElementById('user-header').classList.remove('hidden');
-                    }
-
-                } catch (error) {
-                    console.error('認証エラー:', error);
-                    showError(error.message);
-                    sessionStorage.removeItem('discord_access_token');
+                } catch (err) {
+                    console.error('ロール取得失敗:', err);
                 }
-            } else {
-                switchView('login');
+
+                ui.checkingLoader.classList.add('hidden');
+                ui.statusContent.classList.remove('hidden');
+                ui.header.classList.remove('hidden');
+
+                if (hasRole) {
+                    ui.hasRoleView.classList.remove('hidden');
+                    // ロールがある場合は最初から全リンク画面を表示
+                    switchView('all-links');
+                } else {
+                    ui.noRoleView.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('認証エラー:', error);
+                showError(error.message);
+                sessionStorage.removeItem('discord_access_token');
             }
         }
 
-        function showError(msg) {
-            const errBox = document.getElementById('error-message-box');
-            const errText = document.getElementById('error-message-text');
-            if (errBox && errText) {
-                errText.textContent = msg;
-                errBox.classList.remove('hidden');
-            }
+        function logout() {
+            sessionStorage.removeItem('discord_access_token');
+            currentUser = null;
+            userRoles = [];
+            ui.header.classList.add('hidden');
+            switchView('login');
+        }
+
+        /* =====================================================
+         * リンク一覧の描画
+         * ===================================================== */
+        function videoThumb(link, boxCls, videoCls) {
+            const video = h('video', {
+                src: `${link.videoUrl}#t=0.001`,
+                preload: 'metadata',
+                playsinline: true,
+                class: videoCls
+            });
+            video.muted = true;
+            return video;
         }
 
         function renderAllLinks() {
-            const container = document.getElementById('all-links-container');
-            if (!container) return;
-            container.innerHTML = '';
+            ui.allContainer.innerHTML = '';
 
             LINK_LIST.forEach(link => {
                 const isSaved = savedLinkIds.includes(link.id);
-                const card = document.createElement('div');
-                card.id = `link-card-${link.id}`;
-                card.className = 'p-3 bg-gray-900/90 border border-gray-800 rounded-2xl relative flex items-center space-x-3 group shadow-lg';
 
-                card.innerHTML = `
-                    <div class="relative w-16 h-24 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center">
-                        <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-contain bg-black pointer-events-none"></video>
-                        <div class="absolute bottom-1 left-1 right-1 flex justify-center pointer-events-none">
-                            <span class="text-[8px] text-gray-300 font-mono bg-black/80 px-1 rounded">0:00</span>
-                        </div>
-                    </div>
+                const card = h('div', {
+                    id: `link-card-${link.id}`,
+                    class: 'p-3 bg-gray-900/90 border border-gray-800 rounded-2xl relative flex items-center space-x-3 group shadow-lg'
+                },
+                    h('div', { class: 'relative w-16 h-24 rounded-lg overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center' },
+                        videoThumb(link, '', 'w-full h-full object-contain bg-black pointer-events-none'),
+                        h('div', { class: 'absolute bottom-1 left-1 right-1 flex justify-center pointer-events-none' },
+                            h('span', { class: 'text-[8px] text-gray-300 font-mono bg-black/80 px-1 rounded' }, '0:00'))
+                    ),
+                    h('div', { class: 'flex-1 min-w-0 pr-6' },
+                        h('h3', { class: 'text-white font-bold text-xs truncate' }, link.title),
+                        h('p', { class: 'text-[11px] text-gray-400 mt-0.5 line-clamp-2 leading-tight' }, link.description),
+                        h('div', { class: 'mt-1.5' },
+                            h('a', {
+                                href: link.url,
+                                target: '_blank',
+                                rel: 'noopener noreferrer',
+                                class: 'text-[10px] text-emerald-400 hover:text-emerald-300 underline break-all inline-flex items-center space-x-1 font-mono'
+                            },
+                                h('span', { class: 'truncate' }, link.url),
+                                icon('fa-solid fa-arrow-up-right-from-square text-[8px] ml-1 shrink-0')))
+                    ),
+                    h('button', {
+                        class: 'absolute top-2 right-2 text-sm p-1.5 active:scale-125 transition cursor-pointer',
+                        onclick: () => toggleSaveLink(link.id)
+                    }, icon(isSaved ? 'fa-solid fa-bookmark text-amber-400' : 'fa-regular fa-bookmark text-gray-500'))
+                );
 
-                    <div class="flex-1 min-w-0 pr-6">
-                        <h3 class="text-white font-bold text-xs truncate">${link.title}</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5 line-clamp-2 leading-tight">${link.description}</p>
-
-                        <div class="mt-1.5">
-                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-[10px] text-emerald-400 hover:text-emerald-300 underline break-all inline-flex items-center space-x-1 font-mono">
-                                <span class="truncate">${link.url}</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[8px] ml-1 shrink-0"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <button onclick="toggleSaveLink(${link.id})" class="absolute top-2 right-2 text-sm p-1.5 active:scale-125 transition cursor-pointer">
-                        <i class="${isSaved ? 'fa-solid fa-bookmark text-amber-400' : 'fa-regular fa-bookmark text-gray-500'}"></i>
-                    </button>
-                `;
-
-                container.appendChild(card);
+                ui.allContainer.appendChild(card);
             });
         }
 
         function renderSavedLinks() {
-            const container = document.getElementById('saved-links-container');
-            if (!container) return;
-            container.innerHTML = '';
+            ui.savedContainer.innerHTML = '';
 
             const savedItems = LINK_LIST.filter(link => savedLinkIds.includes(link.id));
 
             if (savedItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-gray-500">
-                        <i class="fa-regular fa-bookmark text-2xl mb-1 block"></i>
-                        <p class="text-xs">保存されているリンクはありません</p>
-                    </div>
-                `;
+                ui.savedContainer.appendChild(
+                    h('div', { class: 'text-center py-8 text-gray-500' },
+                        icon('fa-regular fa-bookmark text-2xl mb-1 block'),
+                        h('p', { class: 'text-xs' }, '保存されているリンクはありません'))
+                );
                 return;
             }
 
             savedItems.forEach(link => {
-                const card = document.createElement('div');
-                card.className = 'p-2.5 bg-gray-900/90 border border-amber-500/20 rounded-xl flex items-center justify-between space-x-2';
+                const card = h('div', { class: 'p-2.5 bg-gray-900/90 border border-amber-500/20 rounded-xl flex items-center justify-between space-x-2' },
+                    h('div', { class: 'flex items-center space-x-2.5 min-w-0 flex-1' },
+                        h('div', { class: 'w-12 h-16 rounded-md overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center' },
+                            videoThumb(link, '', 'w-full h-full object-contain bg-black')),
+                        h('div', { class: 'min-w-0 flex-1' },
+                            h('h4', { class: 'text-xs font-bold text-white truncate' }, link.title),
+                            h('p', { class: 'text-[10px] text-gray-400 ellipsis-text mt-0.5 pr-1' }, link.description))
+                    ),
+                    h('button', {
+                        class: 'px-2.5 py-1.5 bg-amber-500/20 active:bg-amber-500/40 border border-amber-500/40 text-amber-300 font-bold text-[10px] rounded-lg transition shrink-0 flex items-center space-x-1 cursor-pointer',
+                        onclick: () => scrollToLinkInAllLinks(link.id)
+                    }, h('span', null, '移動'), icon('fa-solid fa-chevron-right text-[8px]'))
+                );
 
-                card.innerHTML = `
-                    <div class="flex items-center space-x-2.5 min-w-0 flex-1">
-                        <div class="w-12 h-16 rounded-md overflow-hidden bg-black shrink-0 border border-gray-800 flex items-center justify-center">
-                            <video src="${link.videoUrl}#t=0.001" preload="metadata" muted playsinline class="w-full h-full object-contain bg-black"></video>
-                        </div>
-
-                        <div class="min-w-0 flex-1">
-                            <h4 class="text-xs font-bold text-white truncate">${link.title}</h4>
-                            <p class="text-[10px] text-gray-400 ellipsis-text mt-0.5 pr-1">${link.description}</p>
-                        </div>
-                    </div>
-
-                    <button onclick="scrollToLinkInAllLinks(${link.id})" class="px-2.5 py-1.5 bg-amber-500/20 active:bg-amber-500/40 border border-amber-500/40 text-amber-300 font-bold text-[10px] rounded-lg transition shrink-0 flex items-center space-x-1 cursor-pointer">
-                        <span>移動</span>
-                        <i class="fa-solid fa-chevron-right text-[8px]"></i>
-                    </button>
-                `;
-
-                container.appendChild(card);
+                ui.savedContainer.appendChild(card);
             });
         }
 
@@ -554,23 +605,19 @@
             }, 150);
         }
 
-        function logout() {
-            sessionStorage.removeItem('discord_access_token');
-            currentUser = null;
-            userRoles = [];
-            document.getElementById('user-header').classList.add('hidden');
-            switchView('login');
-        }
-
+        /* =====================================================
+         * 起動
+         * ===================================================== */
         window.addEventListener('click', (e) => {
-            const header = document.getElementById('user-header');
-            if (header && !header.contains(e.target)) {
-                const dropdown = document.getElementById('user-menu-dropdown');
-                if (dropdown) dropdown.classList.add('hidden');
+            if (ui.header && !ui.header.contains(e.target)) {
+                ui.dropdown.classList.add('hidden');
             }
         });
 
-        window.addEventListener('DOMContentLoaded', handleOAuthCallback);
+        window.addEventListener('DOMContentLoaded', () => {
+            buildApp();
+            handleOAuthCallback();
+        });
     </script>
 </body>
 </html>
