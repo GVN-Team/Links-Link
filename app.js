@@ -1,16 +1,10 @@
-/* =====================================================
- * 設定定数
- * ===================================================== */
-const CLIENT_ID = '1549006862576390195';
+
+const CLIENT_ID = '1546182857364607076';
 const TARGET_SERVER_ID = '1545048902032556173';
 const REQUIRED_ROLE_ID = '1549026062015529031';
 
-// redirect_uri は現在のページURLの末尾のパラメータを除いたクリーンな原点URL
 const REDIRECT_URI = window.location.origin + window.location.pathname;
 
-/**
- * ★ JavaScript内で追加・変更できるリンクデータ一覧
- */
 const LINK_LIST = [
     {
         id: 1,
@@ -35,19 +29,12 @@ const LINK_LIST = [
     }
 ];
 
-/* =====================================================
- * 状態管理
- * ===================================================== */
 let currentUser = null;
 let userRoles = [];
 let savedLinkIds = JSON.parse(localStorage.getItem('saved_link_ids') || '[]');
 
-// 描画した要素への参照
 const ui = {};
 
-/* =====================================================
- * DOM 生成ヘルパー
- * ===================================================== */
 function h(tag, props, ...children) {
     const el = document.createElement(tag);
     for (const [key, value] of Object.entries(props || {})) {
@@ -79,11 +66,6 @@ function appendChildren(el, children) {
 
 const icon = (cls) => h('i', { class: cls });
 
-/* =====================================================
- * レイアウト描画
- * ===================================================== */
-
-// 右上アバター + ドロップダウンメニュー
 function buildHeader() {
     ui.navAvatar = h('img', { alt: 'Avatar', class: 'w-full h-full object-cover' });
     ui.menuUserName = h('p', { class: 'text-xs font-bold text-white truncate' });
@@ -123,7 +105,6 @@ function buildHeader() {
     return ui.header;
 }
 
-// 1. ログイン画面
 function buildLoginView() {
     return h('section', { class: 'flex flex-col items-center justify-center w-full h-full my-auto' },
         h('button', {
@@ -133,7 +114,6 @@ function buildLoginView() {
     );
 }
 
-// 2. 認証ステータス画面
 function buildAuthStatusView() {
     ui.checkingLoader = h('div', { class: 'py-10' },
         icon('fa-solid fa-circle-notch fa-spin text-3xl text-[#5865F2] mb-3'),
@@ -185,7 +165,6 @@ function buildAuthStatusView() {
     );
 }
 
-// 共通：「戻る」ボタン付きパネルヘッダー
 function panelHeader(iconBox, iconCls, title) {
     return h('div', { class: 'flex items-center justify-between pb-4 border-b border-gray-800 mb-4' },
         h('div', { class: 'flex items-center space-x-2' },
@@ -198,7 +177,6 @@ function panelHeader(iconBox, iconCls, title) {
     );
 }
 
-// 3. アカウント設定画面
 function buildAccountSettingsView() {
     ui.accAvatar = h('img', {
         alt: 'Avatar',
@@ -223,7 +201,6 @@ function buildAccountSettingsView() {
     );
 }
 
-// 4. 保存したリンク画面
 function buildSavedLinksView() {
     ui.savedContainer = h('div', { class: 'space-y-3' });
     return h('section', { class: 'hidden w-full my-4' },
@@ -233,13 +210,11 @@ function buildSavedLinksView() {
     );
 }
 
-// 5. All Link 画面
 function buildAllLinksView() {
     ui.allContainer = h('div', { class: 'space-y-3' });
     return h('section', { class: 'hidden w-full my-4' }, ui.allContainer);
 }
 
-// アプリ全体の組み立て
 function buildApp() {
     document.body.className = 'bg-black text-white min-h-[100dvh] h-[100dvh] flex flex-col justify-between relative overflow-x-hidden';
     document.body.innerHTML = '';
@@ -258,11 +233,8 @@ function buildApp() {
     document.body.append(buildHeader(), main);
 }
 
-/* =====================================================
- * ビュー切り替え・UI更新
- * ===================================================== */
 function switchView(viewName) {
-    // ログイン画面の時は body の高さ固定・スクロール防止
+
     if (viewName === 'login') {
         document.body.classList.add('h-[100dvh]', 'overflow-hidden');
     } else {
@@ -325,11 +297,8 @@ function showError(msg) {
     ui.errorBox.classList.remove('hidden');
 }
 
-/* =====================================================
- * Discord 認証
- * ===================================================== */
 function loginWithDiscord() {
-    // Implicit Grant Flow (token) を使用して単一HTMLのみで動作させる
+
     const scope = encodeURIComponent('identify guilds guilds.members.read');
     const redirect = encodeURIComponent(REDIRECT_URI);
     const authUrl = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${redirect}&scope=${scope}`;
@@ -339,14 +308,13 @@ function loginWithDiscord() {
 async function handleOAuthCallback() {
     let accessToken = null;
 
-    // URLのハッシュ (#access_token=...) からトークンを探す
     const hash = window.location.hash.substring(1);
     const params = new URLSearchParams(hash);
 
     if (params.has('access_token')) {
         accessToken = params.get('access_token');
         sessionStorage.setItem('discord_access_token', accessToken);
-        // アドレスバーのハッシュを消去して綺麗なURLに
+
         history.replaceState(null, null, window.location.pathname);
     } else {
         accessToken = sessionStorage.getItem('discord_access_token');
@@ -360,7 +328,7 @@ async function handleOAuthCallback() {
     switchView('auth-status');
 
     try {
-        // ユーザー情報取得
+
         const userRes = await fetch('https://discord.com/api/v10/users/@me', {
             headers: { Authorization: `Bearer ${accessToken}` }
         });
@@ -373,7 +341,6 @@ async function handleOAuthCallback() {
         currentUser = await userRes.json();
         updateUserInfoUI(currentUser);
 
-        // サーバーメンバー情報（ロール一覧）の取得
         let hasRole = false;
         try {
             const memberRes = await fetch(`https://discord.com/api/v10/users/@me/guilds/${TARGET_SERVER_ID}/member`, {
@@ -398,7 +365,7 @@ async function handleOAuthCallback() {
 
         if (hasRole) {
             ui.hasRoleView.classList.remove('hidden');
-            // ロールがある場合は最初から全リンク画面を表示
+
             switchView('all-links');
         } else {
             ui.noRoleView.classList.remove('hidden');
@@ -419,9 +386,6 @@ function logout() {
     switchView('login');
 }
 
-/* =====================================================
- * リンク一覧の描画
- * ===================================================== */
 function videoThumb(link, boxCls, videoCls) {
     const video = h('video', {
         src: `${link.videoUrl}#t=0.001`,
@@ -528,9 +492,6 @@ function scrollToLinkInAllLinks(id) {
     }, 150);
 }
 
-/* =====================================================
- * 起動
- * ===================================================== */
 window.addEventListener('click', (e) => {
     if (ui.header && !ui.header.contains(e.target)) {
         ui.dropdown.classList.add('hidden');
