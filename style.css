@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+}
+
+body {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+.discord-btn {
+    background: linear-gradient(135deg, #5865F2 0%, #6366F1 100%);
+    color: #ffffff;
+    box-shadow: 0 0 18px rgba(88, 101, 242, 0.45), 0 0 35px rgba(99, 102, 241, 0.25);
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.discord-btn:active, .discord-btn:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 0 24px rgba(88, 101, 242, 0.75), 0 0 45px rgba(147, 197, 253, 0.35);
+    filter: brightness(1.08);
+}
+
+.glass-panel {
+    background: rgba(13, 14, 22, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ellipsis-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.highlight-card {
+    animation: cardGlow 2s ease-in-out;
+}
+
+@keyframes cardGlow {
+    0% { border-color: #3B82F6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
+    100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: none; }
+}
