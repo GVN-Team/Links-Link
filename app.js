@@ -18,7 +18,7 @@ const LINK_LIST = [
         title: '帷子　栞久蘭(顔あり) 2',
         url: 'https://www.image2url.com/r2/default/videos/1789366014237-127a4eaf-b4a5-4da9-86d5-985c78496e42.mov',
         videoUrl: 'https://www.image2url.com/r2/default/videos/1789366014237-127a4eaf-b4a5-4da9-86d5-985c78496e42.mov',
-        description: '帷子の流出
+        description: '帷子の流出'
     },
     {
         id: 3,
