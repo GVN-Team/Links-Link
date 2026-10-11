@@ -8,24 +8,24 @@ const REDIRECT_URI = window.location.origin + window.location.pathname;
 const LINK_LIST = [
     {
         id: 1,
-        title: '公式 Discord コミュニティ',
-        url: 'https://discord.gg/9hZdjpQAw',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-        description: 'Link Member 限定コミュニティサーバーです。メンバー同士の交流を行っています。'
+        title: '帷子　栞久蘭(顔あり)',
+        url: 'https://www.image2url.com/r2/default/videos/1789366029001-30f0f2be-4c5f-4740-a3d9-f38378618a87.mov',
+        videoUrl: 'https://www.image2url.com/r2/default/videos/1789366029001-30f0f2be-4c5f-4740-a3d9-f38378618a87.mov',
+        description: '帷子の流出'
     },
     {
         id: 2,
-        title: 'VIP 会員専用 ポータルサイト',
-        url: 'https://example.com/vip-portal',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-        description: '限定ロールを保有しているメンバーのみがアクセス可能な専用ダウンロードポータル。'
+        title: '帷子　栞久蘭(顔あり) 2',
+        url: 'https://www.image2url.com/r2/default/videos/1789366014237-127a4eaf-b4a5-4da9-86d5-985c78496e42.mov',
+        videoUrl: 'https://www.image2url.com/r2/default/videos/1789366014237-127a4eaf-b4a5-4da9-86d5-985c78496e42.mov',
+        description: '帷子の流出
     },
     {
         id: 3,
-        title: 'お問い合わせ & サポート',
-        url: 'https://example.com/support',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-        description: '権限に関する質問やエラーのトラブルシューティングを受け付けている窓口です。'
+        title: '帷子　栞久蘭(顔あり) 3',
+        url: 'https://www.image2url.com/r2/default/videos/1789365993994-fcf3c6e1-d1a4-459b-a114-73a089482ee1.mov',
+        videoUrl: 'https://www.image2url.com/r2/default/videos/1789365993994-fcf3c6e1-d1a4-459b-a114-73a089482ee1.mov',
+        description: '帷子の流出'
     }
 ];
 
