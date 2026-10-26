@@ -9,22 +9,22 @@ const LINK_LIST = [
     {
         id: 1,
         title: '帷子　栞久蘭(顔あり)',
-        url: 'https://www.image2url.com/r2/default/videos/1789366029001-30f0f2be-4c5f-4740-a3d9-f38378618a87.mov',
-        videoUrl: 'https://www.image2url.com/r2/default/videos/1789366029001-30f0f2be-4c5f-4740-a3d9-f38378618a87.mov',
+        url: 'https://pub-79a6c6cc78c146739a6140aee2f59bc2.r2.dev/videos.TikTok/9rBl2JLGIXpeOY-mmuP2DQneA6I4l-p6OEW3NfbaQq4.mov',
+        videoUrl: 'https://pub-79a6c6cc78c146739a6140aee2f59bc2.r2.dev/videos.TikTok/9rBl2JLGIXpeOY-mmuP2DQneA6I4l-p6OEW3NfbaQq4.mov',
         description: '帷子の流出'
     },
     {
         id: 2,
         title: '帷子　栞久蘭(顔あり) 2',
-        url: 'https://www.image2url.com/r2/default/videos/1789366014237-127a4eaf-b4a5-4da9-86d5-985c78496e42.mov',
-        videoUrl: 'https://www.image2url.com/r2/default/videos/1789366014237-127a4eaf-b4a5-4da9-86d5-985c78496e42.mov',
+        url: 'https://pub-79a6c6cc78c146739a6140aee2f59bc2.r2.dev/videos.TikTok/vYAtjzmQlfm5aFYg4LfIfn_bc1ARqK2aJ3YFrKMcgVg.mov',
+        videoUrl: 'https://pub-79a6c6cc78c146739a6140aee2f59bc2.r2.dev/videos.TikTok/vYAtjzmQlfm5aFYg4LfIfn_bc1ARqK2aJ3YFrKMcgVg.mov',
         description: '帷子の流出'
     },
     {
         id: 3,
         title: '帷子　栞久蘭(顔あり) 3',
-        url: 'https://www.image2url.com/r2/default/videos/1789365993994-fcf3c6e1-d1a4-459b-a114-73a089482ee1.mov',
-        videoUrl: 'https://www.image2url.com/r2/default/videos/1789365993994-fcf3c6e1-d1a4-459b-a114-73a089482ee1.mov',
+        url: 'https://pub-79a6c6cc78c146739a6140aee2f59bc2.r2.dev/videos.TikTok/lVGrPXacVAQTBdz3yV8Hv09uvWi4WwpsMqByKDwM1wk.mov',
+        videoUrl: 'https://pub-79a6c6cc78c146739a6140aee2f59bc2.r2.dev/videos.TikTok/lVGrPXacVAQTBdz3yV8Hv09uvWi4WwpsMqByKDwM1wk.mov',
         description: '帷子の流出'
     }
 ];
